@@ -1,21 +1,35 @@
 package entity;
 
+import javax.imageio.ImageIO;
+import java.awt.*;
 import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 
-public class Entity {
+public abstract class Entity {
 
+    // Location and movement
     private int x;
     private int y;
+    private int height;
+    private int width;
     private int speed;
-    private int totalFrames;
-    private int frameCounter = 1;
-    private int spriteAnimationSpeed;
 
+
+    // Sprite Fields
     private BufferedImage idleSprite;
+    private BufferedImage[] duckSprite;
+    private BufferedImage[] jumpSprite;
     private BufferedImage[] rightSprites;
     private BufferedImage[] leftSprites;
     private Direction direction;
     private Direction previousDirection;
+
+    // Sprite math
+    private int totalFrames;
+    private int frameCounter = 1;
+    private int spriteAnimationSpeed;
+
 
     public Entity(int totalFrames, int spriteAnimationSpeed) {
         this.totalFrames = totalFrames;
@@ -23,6 +37,20 @@ public class Entity {
         this.rightSprites = new BufferedImage[totalFrames];
         this.leftSprites = new BufferedImage[totalFrames];
         this.direction = Direction.IDLE;
+    }
+
+    public void getSpriteImages(String spriteDirectoryPath, String fileExtension) {
+        try {
+            this.setIdleSprite(ImageIO.read(new File(spriteDirectoryPath + "0" + fileExtension)));
+            for (int i = 0; i < this.getTotalFrames() ; i++) {
+                String path = spriteDirectoryPath + i + fileExtension;
+                this.getLeftSprites()[i] = ImageIO.read(new File(path));
+                this.getRightSprites()[i] = ImageIO.read(new File(path));
+            }
+        } catch (IOException | NullPointerException e) {
+            throw new RuntimeException("Ran into an error fetching sprite images. Expected image path: " + spriteDirectoryPath);
+
+        }
     }
 
     public BufferedImage[] getRightSprites() {
@@ -111,5 +139,40 @@ public class Entity {
 
     public void setSpriteAnimationSpeed(int spriteAnimationSpeed) {
         this.spriteAnimationSpeed = spriteAnimationSpeed;
+    }
+
+    public BufferedImage[] getDuckSprite() {
+        return duckSprite;
+    }
+
+    public void setDuckSprite(BufferedImage[] duckSprite) {
+        this.duckSprite = duckSprite;
+    }
+
+    public BufferedImage[] getJumpSprite() {
+        return jumpSprite;
+    }
+
+    public void setJumpSprite(BufferedImage[] jumpSprite) {
+        this.jumpSprite = jumpSprite;
+    }
+
+    abstract public void update();
+    abstract public void draw(Graphics2D graphics2D);
+
+    public int getHeight() {
+        return height;
+    }
+
+    public void setHeight(int height) {
+        this.height = height;
+    }
+
+    public int getWidth() {
+        return width;
+    }
+
+    public void setWidth(int width) {
+        this.width = width;
     }
 }

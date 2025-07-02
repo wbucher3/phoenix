@@ -29,8 +29,6 @@ public class GameWindow extends JPanel implements Runnable{
 
 
 
-
-
     public GameWindow() {
         this.setPreferredSize(new Dimension(screenWidth, screenHeight));
         this.setBackground(Color.GRAY);

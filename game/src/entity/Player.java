@@ -3,42 +3,29 @@ package entity;
 import game.GameWindow;
 import game.KeyPressHandler;
 
-import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
-import java.util.Objects;
+
 
 public class Player extends Entity {
 
-    GameWindow gameWindow;
+//    GameWindow gameWindow;
     KeyPressHandler keyPressHandler;
 
     public Player(GameWindow gameWindow, KeyPressHandler keyPressHandler) {
         super(2, 20);
-        this.gameWindow = gameWindow;
+//        this.gameWindow = gameWindow;
         this.keyPressHandler = keyPressHandler;
+
 
         super.setX(400);
         super.setY(400);
+        super.setWidth(64);
+        super.setHeight(64);
         super.setSpeed(4);
 
-        this.getSpriteImages();
+        super.getSpriteImages("./assets/player/", ".png");
 
-    }
-
-    public void getSpriteImages() {
-        try {
-            super.setIdleSprite(ImageIO.read(new File("./assets/player/0.png")));
-            for (int i = 0; i < super.getTotalFrames() ; i++) {
-                String path = "./assets/player/" + i + ".png";
-                super.getLeftSprites()[i] = ImageIO.read(new File(path));
-                super.getRightSprites()[i] = ImageIO.read(new File(path));
-            }
-        } catch (IOException | NullPointerException e) {
-            e.printStackTrace();
-        }
     }
 
 
@@ -83,6 +70,6 @@ public class Player extends Entity {
             case Direction.LEFT -> image = super.getLeftSprites()[Math.round((float) super.getFrameCounter() / super.getSpriteAnimationSpeed())];
             case Direction.RIGHT -> image = super.getRightSprites()[Math.round((float) super.getFrameCounter() / super.getSpriteAnimationSpeed())];
         }
-        graphics2D.drawImage(image, super.getX(), super.getY(), gameWindow.tileSize, gameWindow.tileSize, null);
+        graphics2D.drawImage(image, super.getX(), super.getY(), super.getWidth(), super.getHeight(), null);
     }
 }
