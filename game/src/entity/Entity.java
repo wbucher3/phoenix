@@ -16,7 +16,7 @@ public abstract class Entity {
     private int speed;
     private int jumpPower;
 
-    // collision 
+    // collision
     private Rectangle hitBox;
 
     // Sprite Fields

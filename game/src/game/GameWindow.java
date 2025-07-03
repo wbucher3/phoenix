@@ -3,6 +3,7 @@ package game;
 import entity.Player;
 import tile.Tile;
 import tile.TileHandler;
+import tile.TileInformation;
 
 import javax.swing.*;
 import java.awt.*;
@@ -32,7 +33,8 @@ public class GameWindow extends JPanel implements Runnable{
     Player player = new Player(keyPressHandler, collisionHandler);
 
     // Map //
-    TileHandler tileHandler = new TileHandler(this);
+    TileInformation level1 = new TileInformation("./assets/maps/map_0.txt", "./assets/tiles/", new String[]{"wood-block", "stone-block"}, new boolean[]{true, false});
+    TileHandler tileHandler = new TileHandler(12, 12, tileSize, 2, level1);
 
 
     public GameWindow() {

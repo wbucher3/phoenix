@@ -11,8 +11,8 @@ public class Tile {
     private BufferedImage image;
     private boolean collidable;
 
-    public Tile(String tileDirectoryPath, String tileFileName, String fileExtension) {
-        this.collidable = false;
+    public Tile(String tileDirectoryPath, String tileFileName, String fileExtension, boolean collidable) {
+        this.collidable = collidable;
         this.initializeTileImage(tileDirectoryPath, tileFileName, fileExtension);
     }
 

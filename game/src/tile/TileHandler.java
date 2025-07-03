@@ -1,53 +1,58 @@
 package tile;
 
-import game.GameWindow;
-
 import java.awt.*;
 import java.io.*;
 
 public class TileHandler {
 
-    private GameWindow gameWindow;
     private Tile[] tiles;
-    private int totalNumberTileTypes;
+    private int numberOfTileTypes;
 
     int[][] tileMap;
 
     private int columns;
     private int rows;
+    private final int tileSize;
 
+    private final TileInformation tileInformation;
 
+    public TileHandler(int rows, int columns, int tileSize, int numberOfTileTypes, TileInformation tileInformation) {
 
-    public TileHandler(GameWindow gameWindow) {
-        this.totalNumberTileTypes = 2;
-        this.tiles = new Tile[totalNumberTileTypes];
-        this.gameWindow = gameWindow;
+        // tile handler consts
+        this.numberOfTileTypes = numberOfTileTypes;
+        this.rows = rows;
+        this.columns = columns;
+        this.tileSize = tileSize;
+
+        // file paths
+        this.tileInformation = tileInformation;
+
+        // load the tile sprites
+        this.tiles = new Tile[this.numberOfTileTypes];
         this.initializeTiles();
-        this.rows = 12;
-        this.columns = 12;
+
+        // read in the tile map
         this.tileMap = new int[this.columns][this.rows];
         this.loadMap();
     }
 
 
     private void initializeTiles() {
-        this.getTiles()[0] = new Tile("./assets/tiles/", "wood-block", ".png");
-        this.getTiles()[1] = new Tile("./assets/tiles/", "stone-block", ".png");
-        this.getTiles()[0].setCollidable(true);
+        for (int i = 0 ; i < this.tileInformation.getNames().length ; i++) {
+            this.getTiles()[i] = new Tile(tileInformation.getImageDirectory(), tileInformation.getNames()[i], ".png", tileInformation.getCollidable()[i]);
+        }
+
     }
 
     private void loadMap() {
-        String mapPath = "./assets/maps/map_0.txt";
-
         try {
-            BufferedReader reader = new BufferedReader(new FileReader(mapPath));
+            BufferedReader reader = new BufferedReader(new FileReader(this.tileInformation.getTileMapDirectory()));
 
             for (int x = 0 ; x < this.rows ; x++) {
                 String[] line = reader.readLine().split(" ");
                 for (int y = 0 ; y < this.columns ; y++) {
                     this.tileMap[x][y] = Integer.parseInt(line[y]);
                 }
-
             }
             reader.close();
 
@@ -59,17 +64,9 @@ public class TileHandler {
     public void drawAllTiles(Graphics2D graphics2D) {
         for (int x = 0 ; x < rows ; x++) {
             for (int y = 0 ; y < columns; y++) {
-                this.getTiles()[this.tileMap[x][y]].draw(graphics2D,x * gameWindow.tileSize, y * gameWindow.tileSize, gameWindow.tileSize);
+                this.getTiles()[this.tileMap[x][y]].draw(graphics2D,x * this.tileSize, y * this.tileSize, this.tileSize);
             }
         }
-    }
-
-    public GameWindow getGameWindow() {
-        return gameWindow;
-    }
-
-    public void setGameWindow(GameWindow gameWindow) {
-        this.gameWindow = gameWindow;
     }
 
     public Tile[] getTiles() {
@@ -80,12 +77,12 @@ public class TileHandler {
         this.tiles = tiles;
     }
 
-    public int getTotalNumberTileTypes() {
-        return totalNumberTileTypes;
+    public int getNumberOfTileTypes() {
+        return numberOfTileTypes;
     }
 
-    public void setTotalNumberTileTypes(int totalNumberTileTypes) {
-        this.totalNumberTileTypes = totalNumberTileTypes;
+    public void setNumberOfTileTypes(int numberOfTileTypes) {
+        this.numberOfTileTypes = numberOfTileTypes;
     }
 
     public int[][] getTileMap() {
