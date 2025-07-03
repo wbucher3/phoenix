@@ -10,7 +10,7 @@ public class Main {
 
 
         JFrame window = new JFrame();
-        window.setTitle("Testing Game Features");
+        window.setTitle("Game");
         window.setResizable(false);
         window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         window.setLocationRelativeTo(null);

@@ -14,7 +14,10 @@ public abstract class Entity {
     private int height;
     private int width;
     private int speed;
+    private int jumpPower;
 
+    // collision 
+    private Rectangle hitBox;
 
     // Sprite Fields
     private BufferedImage idleSprite;
@@ -52,6 +55,9 @@ public abstract class Entity {
 
         }
     }
+
+    abstract public void update();
+    abstract public void draw(Graphics2D graphics2D);
 
     public BufferedImage[] getRightSprites() {
         return rightSprites;
@@ -157,9 +163,6 @@ public abstract class Entity {
         this.jumpSprite = jumpSprite;
     }
 
-    abstract public void update();
-    abstract public void draw(Graphics2D graphics2D);
-
     public int getHeight() {
         return height;
     }
@@ -175,4 +178,16 @@ public abstract class Entity {
     public void setWidth(int width) {
         this.width = width;
     }
+
+    public Rectangle getHitBox() {
+        return hitBox;
+    }
+
+    public void setHitBox(Rectangle hitBox) {
+        this.hitBox = hitBox;
+    }
+
+    public int getJumpPower() { return jumpPower; }
+
+    public void setJumpPower(int jumpPower) { this.jumpPower = jumpPower; }
 }
