@@ -20,9 +20,9 @@ public abstract class Entity {
     private Rectangle hitBox;
 
     // Sprite Fields
-    private BufferedImage idleSprite;
-    private BufferedImage[] duckSprite;
-    private BufferedImage[] jumpSprite;
+    private BufferedImage[] idleSprites;
+    private BufferedImage[] duckSprites;
+    private BufferedImage[] jumpSprites;
     private BufferedImage[] rightSprites;
     private BufferedImage[] leftSprites;
     private Direction direction;
@@ -30,7 +30,7 @@ public abstract class Entity {
 
     // Sprite math
     private int totalFrames;
-    private int frameCounter = 1;
+    private int frameCounter = 0;
     private int spriteAnimationSpeed;
 
 
@@ -39,22 +39,30 @@ public abstract class Entity {
         this.spriteAnimationSpeed = spriteAnimationSpeed;
         this.rightSprites = new BufferedImage[totalFrames];
         this.leftSprites = new BufferedImage[totalFrames];
+        this.idleSprites = new BufferedImage[totalFrames];
+        this.jumpSprites = new BufferedImage[totalFrames];
         this.direction = Direction.IDLE;
     }
 
     public void getSpriteImages(String spriteDirectoryPath, String fileExtension) {
         try {
-            this.setIdleSprite(ImageIO.read(new File(spriteDirectoryPath + "0" + fileExtension)));
             for (int i = 0; i < this.getTotalFrames() ; i++) {
-                String path = spriteDirectoryPath + i + fileExtension;
-                this.getLeftSprites()[i] = ImageIO.read(new File(path));
-                this.getRightSprites()[i] = ImageIO.read(new File(path));
+                String walkPath = spriteDirectoryPath + "walk/" + i + fileExtension;
+                String idlePath = spriteDirectoryPath + "idle/" + i + fileExtension;
+                String jumpPath = spriteDirectoryPath + "jump/" + i + fileExtension;
+
+                this.getIdleSprites()[i] = ImageIO.read(new File(idlePath));
+                this.getLeftSprites()[i] = ImageIO.read(new File(walkPath));
+                this.getRightSprites()[i] = ImageIO.read(new File(walkPath));
+                this.getJumpSprites()[i] = ImageIO.read(new File(jumpPath));
             }
         } catch (IOException | NullPointerException e) {
+            e.printStackTrace();
             throw new RuntimeException("Ran into an error fetching sprite images. Expected image path: " + spriteDirectoryPath);
 
         }
     }
+
 
     abstract public void update();
     abstract public void draw(Graphics2D graphics2D);
@@ -97,12 +105,36 @@ public abstract class Entity {
         this.previousDirection = previousDirection;
     }
 
-    public BufferedImage getIdleSprite() {
-        return idleSprite;
+    public BufferedImage[] getIdleSprites() {
+        return idleSprites;
     }
 
-    public void setIdleSprite(BufferedImage idleSprite) {
-        this.idleSprite = idleSprite;
+    public void setIdleSprites(BufferedImage[] idleSprites) {
+        this.idleSprites = idleSprites;
+    }
+
+    public BufferedImage[] getDuckSprites() {
+        return duckSprites;
+    }
+
+    public void setDuckSprites(BufferedImage[] duckSprites) {
+        this.duckSprites = duckSprites;
+    }
+
+    public BufferedImage[] getJumpSprites() {
+        return jumpSprites;
+    }
+
+    public void setJumpSprites(BufferedImage[] jumpSprites) {
+        this.jumpSprites = jumpSprites;
+    }
+
+    public void setRightSprites(BufferedImage[] rightSprites) {
+        this.rightSprites = rightSprites;
+    }
+
+    public void setLeftSprites(BufferedImage[] leftSprites) {
+        this.leftSprites = leftSprites;
     }
 
     public int getX() {
