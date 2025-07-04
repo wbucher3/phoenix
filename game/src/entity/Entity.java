@@ -63,25 +63,15 @@ public abstract class Entity {
         return rightSprites;
     }
 
-    public void setRightSprites(BufferedImage[] rightSprites) {
-        this.rightSprites = rightSprites;
-    }
 
     public BufferedImage[] getLeftSprites() {
         return leftSprites;
-    }
-
-    public void setLeftSprites(BufferedImage[] leftSprites) {
-        this.leftSprites = leftSprites;
     }
 
     public int getTotalFrames() {
         return totalFrames;
     }
 
-    public void setTotalFrames(int totalFrames) {
-        this.totalFrames = totalFrames;
-    }
 
     public int getFrameCounter() {
         return frameCounter;
@@ -141,26 +131,6 @@ public abstract class Entity {
 
     public int getSpriteAnimationSpeed() {
         return spriteAnimationSpeed;
-    }
-
-    public void setSpriteAnimationSpeed(int spriteAnimationSpeed) {
-        this.spriteAnimationSpeed = spriteAnimationSpeed;
-    }
-
-    public BufferedImage[] getDuckSprite() {
-        return duckSprite;
-    }
-
-    public void setDuckSprite(BufferedImage[] duckSprite) {
-        this.duckSprite = duckSprite;
-    }
-
-    public BufferedImage[] getJumpSprite() {
-        return jumpSprite;
-    }
-
-    public void setJumpSprite(BufferedImage[] jumpSprite) {
-        this.jumpSprite = jumpSprite;
     }
 
     public int getHeight() {

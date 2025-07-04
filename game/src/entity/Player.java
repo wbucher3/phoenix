@@ -8,7 +8,6 @@ import util.Constants;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 
-
 public class Player extends Entity {
 
     KeyPressHandler keyPressHandler;

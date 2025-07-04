@@ -52,13 +52,6 @@ public class TileHandler {
 
             for (int y = 0 ; y < this.rows; y++) {
                 String[] line = reader.readLine().split(",");
-
-                StringBuilder currentLine = new StringBuilder();
-                for (String s : line) {
-                    currentLine.append(s);
-                }
-                System.out.println(currentLine);
-
                 for (int x = 0 ; x < this.columns; x++) {
                     this.tileMap[y][x] = Integer.parseInt(line[x]);
                 }
