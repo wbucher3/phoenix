@@ -3,6 +3,7 @@ package entity;
 import game.CollisionHandler;
 import game.GameWindow;
 import game.KeyPressHandler;
+import util.Constants;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -10,22 +11,28 @@ import java.awt.image.BufferedImage;
 
 public class Player extends Entity {
 
-//    GameWindow gameWindow;
     KeyPressHandler keyPressHandler;
     CollisionHandler collisionHandler;
 
-    public Player(KeyPressHandler keyPressHandler, CollisionHandler collisionHandler) {
+    private int screenCenterX;
+    private int screenCenterY;
+
+    public Player(KeyPressHandler keyPressHandler, CollisionHandler collisionHandler, int screenCenterX, int screenCenterY) {
         super(2, 20);
         this.keyPressHandler = keyPressHandler;
         this.collisionHandler = collisionHandler;
-        super.setX(400);
-        super.setY(400);
+
+        super.setX(200);
+        super.setY(200);
         super.setWidth(64);
         super.setHeight(64);
         super.setSpeed(4);
         super.setJumpPower(15);
+        this.screenCenterX = screenCenterX - (super.getWidth() / 2);
+        this.screenCenterY = screenCenterY - (super.getHeight() / 2);
         super.getSpriteImages("./assets/player/", ".png");
         super.setHitBox(new Rectangle(20, 20, 20, 20));
+
     }
 
 
@@ -62,7 +69,7 @@ public class Player extends Entity {
         // CHECK COLLISION
 
         if (!this.collisionHandler.checkFloorCollision(this)) {
-            super.setY(super.getY() + 9);
+            super.setY(super.getY() + Constants.GRAVITY);
         }
 
         if (keyPressHandler.rightPressed && !this.collisionHandler.checkRightWallCollision(this)) {
@@ -88,6 +95,11 @@ public class Player extends Entity {
             case Direction.RIGHT -> image = super.getRightSprites()[Math.round((float) super.getFrameCounter() / super.getSpriteAnimationSpeed())];
             case Direction.JUMP -> image = super.getIdleSprite();
         }
-        graphics2D.drawImage(image, super.getX(), super.getY(), super.getWidth(), super.getHeight(), null);
+        graphics2D.drawImage(image, screenCenterX, screenCenterY, super.getWidth(), super.getHeight(), null);
     }
+
+    // Needed for drawing of tiles
+    public int getScreenCenterX() { return screenCenterX; }
+    public int getScreenCenterY() { return screenCenterY; }
+
 }

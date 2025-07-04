@@ -24,8 +24,8 @@ public class CollisionHandler {
         int entityBottomRow = (entityY2 + entity.getJumpPower()) / gameWindow.tileSize;
 
         // get the type of tile
-        int leftFloorTile = gameWindow.tileHandler.getTileMap()[entityLeftColumn][entityBottomRow];
-        int rightFloorTile = gameWindow.tileHandler.getTileMap()[entityRightColumn][entityBottomRow];
+        int leftFloorTile = gameWindow.tileHandler.getTileMap()[entityBottomRow][entityLeftColumn];
+        int rightFloorTile = gameWindow.tileHandler.getTileMap()[entityBottomRow][entityRightColumn];
 
         // check if the tile type is collidable
         return gameWindow.tileHandler.getTiles()[leftFloorTile].isCollidable() || gameWindow.tileHandler.getTiles()[rightFloorTile].isCollidable();
@@ -42,8 +42,8 @@ public class CollisionHandler {
         int entityRightColumn = entityX2 / gameWindow.tileSize;
         int entityTopRow = (entityY1 - entity.getJumpPower()) / gameWindow.tileSize;
 
-        int leftCeilingTile = gameWindow.tileHandler.getTileMap()[entityLeftColumn][entityTopRow];
-        int rightCeilingTile = gameWindow.tileHandler.getTileMap()[entityRightColumn][entityTopRow];
+        int leftCeilingTile = gameWindow.tileHandler.getTileMap()[entityTopRow][entityLeftColumn];
+        int rightCeilingTile = gameWindow.tileHandler.getTileMap()[entityTopRow][entityRightColumn];
 
         return gameWindow.tileHandler.getTiles()[leftCeilingTile].isCollidable() || gameWindow.tileHandler.getTiles()[rightCeilingTile].isCollidable();
     }
@@ -58,8 +58,8 @@ public class CollisionHandler {
         int entityTopRow = entityY1 / gameWindow.tileSize;
         int entityBottomRow = entityY2 / gameWindow.tileSize;
 
-        int topWallTile = gameWindow.tileHandler.getTileMap()[entityRightColumn][entityTopRow];
-        int bottomWallTile = gameWindow.tileHandler.getTileMap()[entityRightColumn][entityBottomRow];
+        int topWallTile = gameWindow.tileHandler.getTileMap()[entityTopRow][entityRightColumn];
+        int bottomWallTile = gameWindow.tileHandler.getTileMap()[entityBottomRow][entityRightColumn];
 
         return gameWindow.tileHandler.getTiles()[topWallTile].isCollidable() || gameWindow.tileHandler.getTiles()[bottomWallTile].isCollidable();
     }
@@ -73,8 +73,8 @@ public class CollisionHandler {
         int entityTopRow = entityY1 / gameWindow.tileSize;
         int entityBottomRow = entityY2 / gameWindow.tileSize;
 
-        int topWallTile = gameWindow.tileHandler.getTileMap()[entityLeftColumn][entityTopRow];
-        int bottomWallTile = gameWindow.tileHandler.getTileMap()[entityLeftColumn][entityBottomRow];
+        int topWallTile = gameWindow.tileHandler.getTileMap()[entityTopRow][entityLeftColumn];
+        int bottomWallTile = gameWindow.tileHandler.getTileMap()[entityBottomRow][entityLeftColumn];
 
         return gameWindow.tileHandler.getTiles()[topWallTile].isCollidable() || gameWindow.tileHandler.getTiles()[bottomWallTile].isCollidable();
     }

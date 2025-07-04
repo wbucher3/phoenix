@@ -1,5 +1,7 @@
 package tile;
 
+import entity.Player;
+
 import java.awt.*;
 import java.io.*;
 
@@ -32,7 +34,7 @@ public class TileHandler {
         this.initializeTiles();
 
         // read in the tile map
-        this.tileMap = new int[this.columns][this.rows];
+        this.tileMap = new int[this.rows][this.columns];
         this.loadMap();
     }
 
@@ -48,10 +50,17 @@ public class TileHandler {
         try {
             BufferedReader reader = new BufferedReader(new FileReader(this.tileInformation.getTileMapDirectory()));
 
-            for (int x = 0 ; x < this.rows ; x++) {
-                String[] line = reader.readLine().split(" ");
-                for (int y = 0 ; y < this.columns ; y++) {
-                    this.tileMap[x][y] = Integer.parseInt(line[y]);
+            for (int y = 0 ; y < this.rows; y++) {
+                String[] line = reader.readLine().split(",");
+
+                StringBuilder currentLine = new StringBuilder();
+                for (String s : line) {
+                    currentLine.append(s);
+                }
+                System.out.println(currentLine);
+
+                for (int x = 0 ; x < this.columns; x++) {
+                    this.tileMap[y][x] = Integer.parseInt(line[x]);
                 }
             }
             reader.close();
@@ -61,12 +70,31 @@ public class TileHandler {
         }
     }
 
-    public void drawAllTiles(Graphics2D graphics2D) {
-        for (int x = 0 ; x < rows ; x++) {
-            for (int y = 0 ; y < columns; y++) {
-                this.getTiles()[this.tileMap[x][y]].draw(graphics2D,x * this.tileSize, y * this.tileSize, this.tileSize);
+    public void drawAllTiles(Graphics2D graphics2D, Player player) {
+        for (int y = 0 ; y < rows ; y++) {
+            for (int x = 0 ; x < columns; x++) {
+                // gets where the tile is to relation to rest of tiles
+                int worldY = y * this.tileSize;
+                int worldX =  x * this.tileSize;
+                // puts all the tiles in relation to the player being in the center of screen
+                int screenX = worldX - player.getX() + player.getScreenCenterX();
+                int screenY = worldY - player.getY() + player.getScreenCenterY();
+
+                // checks if the tile is on the screen before drawing it (1 tile extra to keep it smooth)
+                if (worldX + tileSize > player.getX() - player.getScreenCenterX()
+                        && worldX - tileSize < player.getX() + player.getScreenCenterX()
+                        && worldY + tileSize > player.getY() - player.getScreenCenterY()
+                        && worldY - tileSize < player.getY() + player.getScreenCenterY()) {
+
+                    this.getTiles()[this.tileMap[y][x]].draw(graphics2D, screenX, screenY, this.tileSize);
+
+                }
+
+
             }
         }
+
+
     }
 
     public Tile[] getTiles() {
