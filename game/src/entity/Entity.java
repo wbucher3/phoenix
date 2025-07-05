@@ -15,8 +15,12 @@ public abstract class Entity {
     private int width;
     private int speed;
     private int jumpPower;
-
     private int jumpFrames;
+
+    private Direction direction;
+    private State currentState;
+    private State previousState;
+
 
     // collision
     private Rectangle hitBox;
@@ -26,10 +30,8 @@ public abstract class Entity {
     private BufferedImage[] duckSprites;
     private BufferedImage[] fallingSprites;
     private BufferedImage[] jumpSprites;
-    private BufferedImage[] rightSprites;
-    private BufferedImage[] leftSprites;
-    private Direction direction;
-    private Direction previousDirection;
+    private BufferedImage[] walkSprites;
+//    private Direction previousDirection;
 
     // Sprite math
     private int totalFrames;
@@ -40,13 +42,14 @@ public abstract class Entity {
     public Entity(int totalFrames, int spriteAnimationSpeed) {
         this.totalFrames = totalFrames;
         this.spriteAnimationSpeed = spriteAnimationSpeed;
-        this.rightSprites = new BufferedImage[totalFrames];
-        this.leftSprites = new BufferedImage[totalFrames];
+        this.walkSprites = new BufferedImage[totalFrames];
         this.idleSprites = new BufferedImage[totalFrames];
         this.jumpSprites = new BufferedImage[totalFrames];
         this.fallingSprites = new BufferedImage[totalFrames];
-        this.direction = Direction.IDLE;
+        this.direction = Direction.RIGHT;
     }
+
+    abstract public void update();
 
     public void getSpriteImages(String spriteDirectoryPath, String fileExtension) {
         try {
@@ -57,29 +60,51 @@ public abstract class Entity {
                 String fallingPath = spriteDirectoryPath + "falling/" + i + fileExtension;
 
                 this.getIdleSprites()[i] = ImageIO.read(new File(idlePath));
-                this.getLeftSprites()[i] = ImageIO.read(new File(walkPath));
-                this.getRightSprites()[i] = ImageIO.read(new File(walkPath));
+                this.getWalkSprites()[i] = ImageIO.read(new File(walkPath));
                 this.getJumpSprites()[i] = ImageIO.read(new File(jumpPath));
                 this.getFallingSprites()[i] = ImageIO.read(new File(fallingPath));
             }
         } catch (IOException | NullPointerException e) {
-            e.printStackTrace();
             throw new RuntimeException("Ran into an error fetching sprite images. Expected image path: " + spriteDirectoryPath);
-
         }
     }
 
+    public void draw(Graphics2D graphics2D, int x, int y) {
+        BufferedImage image = null;
 
-    abstract public void update();
-    abstract public void draw(Graphics2D graphics2D);
+        if (this.getPreviousState() != this.getCurrentState()) {
+            this.setFrameCounter(0);
+        }
 
-    public BufferedImage[] getRightSprites() {
-        return rightSprites;
+        switch (this.getCurrentState()) {
+            case State.IDLE ->    image = this.getIdleSprites()[getSpriteValue()];
+            case State.JUMP ->    image = this.getJumpSprites()[getSpriteValue()];
+            case State.WALK ->    image = this.getWalkSprites()[getSpriteValue()];
+            case State.FALLING -> image = this.getFallingSprites()[getSpriteValue()];
+        }
+        if (this.getDirection() == Direction.RIGHT) {
+            graphics2D.drawImage(image, x, y, this.getWidth(), this.getHeight(), null);
+        } else {
+            graphics2D.drawImage(image, x + this.getWidth(), y, -this.getWidth(), this.getHeight(), null);
+        }
+    }
+
+    // TODO there has to be a better way to do this with math but I am lazy right now
+    // There's a good chance this stays forever lol
+    private int getSpriteValue() {
+        int spriteValue;
+        if (this.getFrameCounter() >= 0 && this.getFrameCounter() < 10) spriteValue = 0;
+        else if (this.getFrameCounter() >= 10 && this.getFrameCounter() < 20) spriteValue = 1;
+        else if (this.getFrameCounter() >= 20 && this.getFrameCounter() < 30) spriteValue = 2;
+        else if (this.getFrameCounter() >= 30 && this.getFrameCounter() < 40) spriteValue = 3;
+        else if (this.getFrameCounter() >= 40 && this.getFrameCounter() < 50) spriteValue = 4;
+        else spriteValue = 5;
+        return spriteValue;
     }
 
 
-    public BufferedImage[] getLeftSprites() {
-        return leftSprites;
+    public BufferedImage[] getWalkSprites() {
+        return walkSprites;
     }
 
     public int getTotalFrames() {
@@ -103,44 +128,18 @@ public abstract class Entity {
         this.direction = direction;
     }
 
-    public Direction getPreviousDirection() {
-        return previousDirection;
-    }
-
-    public void setPreviousDirection(Direction previousDirection) {
-        this.previousDirection = previousDirection;
-    }
-
     public BufferedImage[] getIdleSprites() {
         return idleSprites;
     }
 
-    public void setIdleSprites(BufferedImage[] idleSprites) {
-        this.idleSprites = idleSprites;
-    }
 
     public BufferedImage[] getDuckSprites() {
         return duckSprites;
     }
 
-    public void setDuckSprites(BufferedImage[] duckSprites) {
-        this.duckSprites = duckSprites;
-    }
 
     public BufferedImage[] getJumpSprites() {
         return jumpSprites;
-    }
-
-    public void setJumpSprites(BufferedImage[] jumpSprites) {
-        this.jumpSprites = jumpSprites;
-    }
-
-    public void setRightSprites(BufferedImage[] rightSprites) {
-        this.rightSprites = rightSprites;
-    }
-
-    public void setLeftSprites(BufferedImage[] leftSprites) {
-        this.leftSprites = leftSprites;
     }
 
     public int getX() {
@@ -213,5 +212,21 @@ public abstract class Entity {
 
     public void setFallingSprites(BufferedImage[] fallingSprites) {
         this.fallingSprites = fallingSprites;
+    }
+
+    public State getCurrentState() {
+        return currentState;
+    }
+
+    public void setCurrentState(State currentState) {
+        this.currentState = currentState;
+    }
+
+    public State getPreviousState() {
+        return previousState;
+    }
+
+    public void setPreviousState(State previousState) {
+        this.previousState = previousState;
     }
 }

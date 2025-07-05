@@ -1,7 +1,6 @@
 package entity;
 
 import game.CollisionHandler;
-import game.GameWindow;
 import game.KeyPressHandler;
 import util.Constants;
 
@@ -27,7 +26,7 @@ public class Player extends Entity {
         super.setHeight(64);
         super.setSpeed(8);
         super.setJumpFrames(10);
-        super.setJumpPower(15);
+        super.setJumpPower(22);
         this.screenCenterX = screenCenterX - (super.getWidth() / 2);
         this.screenCenterY = screenCenterY - (super.getHeight() / 2);
         super.getSpriteImages("./assets/player_sprites/", ".png");
@@ -35,38 +34,39 @@ public class Player extends Entity {
 
     }
 
+    public void drawPlayer(Graphics2D graphics2D) {
+        super.draw(graphics2D, screenCenterX, screenCenterY);
+    }
 
     public void update() {
-
         // TICK SPRITE FRAME
         if (super.getFrameCounter() < super.getSpriteAnimationSpeed()) {
             super.setFrameCounter(super.getFrameCounter() + 1);
         } else {
             super.setFrameCounter(0);
         }
-        super.setPreviousDirection(super.getDirection());
+        super.setPreviousState(super.getCurrentState());
 
         // MOVEMENT
         if (keyPressHandler.isKeyPressed()) {
             if (keyPressHandler.rightPressed) {
                 super.setDirection(Direction.RIGHT);
+                super.setCurrentState(State.WALK);
             }
             if (keyPressHandler.leftPressed) {
                 super.setDirection(Direction.LEFT);
+                super.setCurrentState(State.WALK);
             }
             if (keyPressHandler.jumpPressed) {
-                super.setDirection(Direction.JUMP);
+                super.setCurrentState(State.JUMP);
             }
-        } else if (!this.collisionHandler.checkFloorCollision(this) ){
-            super.setDirection(Direction.FALLING);
+        } else if (!this.collisionHandler.checkFloorCollision(this)) {
+            super.setCurrentState(State.FALLING);
         } else {
-            super.setDirection(Direction.IDLE);
+            super.setCurrentState(State.IDLE);
         }
 
         // CHECK COLLISION
-
-
-
         if (keyPressHandler.rightPressed && !this.collisionHandler.checkRightWallCollision(this)) {
             super.setX(super.getX() + super.getSpeed());
         }
@@ -75,7 +75,7 @@ public class Player extends Entity {
             super.setX(super.getX() - super.getSpeed());
         }
 
-        if (keyPressHandler.jumpPressed && !this.collisionHandler.checkCeilingCollision(this) && super.getJumpFrames() < 25) {
+        if (keyPressHandler.jumpPressed && !this.collisionHandler.checkCeilingCollision(this) && super.getJumpFrames() < 10) {
             super.setJumpFrames(super.getJumpFrames() + 1);
             super.setY(super.getY() - super.getJumpPower());
         }
@@ -88,35 +88,6 @@ public class Player extends Entity {
 
     }
 
-    public void draw(Graphics2D graphics2D) {
-        BufferedImage image = null;
-
-        if (super.getPreviousDirection() != super.getDirection()) {
-            super.setFrameCounter(0);
-        }
-
-        switch (super.getDirection()) {
-            case Direction.IDLE ->    image = super.getIdleSprites()[getSpriteValue()];
-            case Direction.JUMP ->    image = super.getJumpSprites()[getSpriteValue()];
-            case Direction.LEFT ->    image = super.getLeftSprites()[getSpriteValue()];
-            case Direction.RIGHT ->   image = super.getRightSprites()[getSpriteValue()];
-            case Direction.FALLING -> image = super.getFallingSprites()[getSpriteValue()];
-        }
-        graphics2D.drawImage(image, screenCenterX, screenCenterY, super.getWidth(), super.getHeight(), null);
-    }
-
-    // TODO there has to be a better way to do this with math but I am lazy right now
-    // There's a good chance this stays forever lol
-    private int getSpriteValue() {
-        int spriteValue;
-        if (super.getFrameCounter() >= 0 && super.getFrameCounter() < 10) spriteValue = 0;
-        else if (super.getFrameCounter() >= 10 && super.getFrameCounter() < 20) spriteValue = 1;
-        else if (super.getFrameCounter() >= 20 && super.getFrameCounter() < 30) spriteValue = 2;
-        else if (super.getFrameCounter() >= 30 && super.getFrameCounter() < 40) spriteValue = 3;
-        else if (super.getFrameCounter() >= 40 && super.getFrameCounter() < 50) spriteValue = 4;
-        else spriteValue = 5;
-        return spriteValue;
-    }
 
     // Needed for drawing of tiles
     public int getScreenCenterX() { return screenCenterX; }

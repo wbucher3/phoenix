@@ -73,8 +73,7 @@ public class GameWindow extends JPanel implements Runnable{
 
 
     }
-
-
+    
     public void update() {
         this.player.update();
     }
@@ -82,7 +81,7 @@ public class GameWindow extends JPanel implements Runnable{
         super.paintComponent(g);
         Graphics2D g2 = (Graphics2D) g;
         this.tileHandler.drawAllTiles(g2, player);
-        this.player.draw(g2);
+        this.player.drawPlayer(g2);
         g2.dispose();
     }
 }
