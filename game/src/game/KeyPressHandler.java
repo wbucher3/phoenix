@@ -1,5 +1,7 @@
 package game;
 
+import util.ControlBindings;
+
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
@@ -16,13 +18,13 @@ public class KeyPressHandler extends KeyAdapter {
     public void keyPressed(KeyEvent keyEvent) {
         int code = keyEvent.getKeyCode();
 
-        if (KeyEvent.VK_A == code) {
+        if (ControlBindings.LEFT == code) {
             this.leftPressed = true;
         }
-        if (KeyEvent.VK_D == code) {
+        if (ControlBindings.RIGHT == code) {
             this.rightPressed = true;
         }
-        if (KeyEvent.VK_SPACE == code) {
+        if (ControlBindings.SPACE == code) {
             this.jumpPressed = true;
         }
 
