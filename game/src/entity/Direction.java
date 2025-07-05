@@ -5,5 +5,6 @@ public enum Direction {
     LEFT,
     JUMP,
     CROUCH,
-    IDLE
+    IDLE,
+    FALLING
 }

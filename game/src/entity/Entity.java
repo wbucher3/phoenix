@@ -16,12 +16,15 @@ public abstract class Entity {
     private int speed;
     private int jumpPower;
 
+    private int jumpFrames;
+
     // collision
     private Rectangle hitBox;
 
     // Sprite Fields
     private BufferedImage[] idleSprites;
     private BufferedImage[] duckSprites;
+    private BufferedImage[] fallingSprites;
     private BufferedImage[] jumpSprites;
     private BufferedImage[] rightSprites;
     private BufferedImage[] leftSprites;
@@ -41,6 +44,7 @@ public abstract class Entity {
         this.leftSprites = new BufferedImage[totalFrames];
         this.idleSprites = new BufferedImage[totalFrames];
         this.jumpSprites = new BufferedImage[totalFrames];
+        this.fallingSprites = new BufferedImage[totalFrames];
         this.direction = Direction.IDLE;
     }
 
@@ -50,11 +54,13 @@ public abstract class Entity {
                 String walkPath = spriteDirectoryPath + "walk/" + i + fileExtension;
                 String idlePath = spriteDirectoryPath + "idle/" + i + fileExtension;
                 String jumpPath = spriteDirectoryPath + "jump/" + i + fileExtension;
+                String fallingPath = spriteDirectoryPath + "falling/" + i + fileExtension;
 
                 this.getIdleSprites()[i] = ImageIO.read(new File(idlePath));
                 this.getLeftSprites()[i] = ImageIO.read(new File(walkPath));
                 this.getRightSprites()[i] = ImageIO.read(new File(walkPath));
                 this.getJumpSprites()[i] = ImageIO.read(new File(jumpPath));
+                this.getFallingSprites()[i] = ImageIO.read(new File(fallingPath));
             }
         } catch (IOException | NullPointerException e) {
             e.printStackTrace();
@@ -192,4 +198,20 @@ public abstract class Entity {
     public int getJumpPower() { return jumpPower; }
 
     public void setJumpPower(int jumpPower) { this.jumpPower = jumpPower; }
+
+    public int getJumpFrames() {
+        return jumpFrames;
+    }
+
+    public void setJumpFrames(int jumpFrames) {
+        this.jumpFrames = jumpFrames;
+    }
+
+    public BufferedImage[] getFallingSprites() {
+        return fallingSprites;
+    }
+
+    public void setFallingSprites(BufferedImage[] fallingSprites) {
+        this.fallingSprites = fallingSprites;
+    }
 }

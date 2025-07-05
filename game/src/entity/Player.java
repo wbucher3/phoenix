@@ -25,7 +25,8 @@ public class Player extends Entity {
         super.setY(200);
         super.setWidth(64);
         super.setHeight(64);
-        super.setSpeed(4);
+        super.setSpeed(8);
+        super.setJumpFrames(10);
         super.setJumpPower(15);
         this.screenCenterX = screenCenterX - (super.getWidth() / 2);
         this.screenCenterY = screenCenterY - (super.getHeight() / 2);
@@ -53,18 +54,18 @@ public class Player extends Entity {
             if (keyPressHandler.leftPressed) {
                 super.setDirection(Direction.LEFT);
             }
-            if (keyPressHandler.jumpPressed && super.getPreviousDirection() != Direction.JUMP) {
+            if (keyPressHandler.jumpPressed) {
                 super.setDirection(Direction.JUMP);
             }
+        } else if (!this.collisionHandler.checkFloorCollision(this) ){
+            super.setDirection(Direction.FALLING);
         } else {
             super.setDirection(Direction.IDLE);
         }
 
         // CHECK COLLISION
 
-        if (!this.collisionHandler.checkFloorCollision(this)) {
-            super.setY(super.getY() + Constants.GRAVITY);
-        }
+
 
         if (keyPressHandler.rightPressed && !this.collisionHandler.checkRightWallCollision(this)) {
             super.setX(super.getX() + super.getSpeed());
@@ -74,8 +75,15 @@ public class Player extends Entity {
             super.setX(super.getX() - super.getSpeed());
         }
 
-        if (keyPressHandler.jumpPressed && !this.collisionHandler.checkCeilingCollision(this)) {
+        if (keyPressHandler.jumpPressed && !this.collisionHandler.checkCeilingCollision(this) && super.getJumpFrames() < 25) {
+            super.setJumpFrames(super.getJumpFrames() + 1);
             super.setY(super.getY() - super.getJumpPower());
+        }
+
+        if (!this.collisionHandler.checkFloorCollision(this)) {
+            super.setY(super.getY() + Constants.GRAVITY);
+        } else {
+            super.setJumpFrames(0);
         }
 
     }
@@ -88,10 +96,11 @@ public class Player extends Entity {
         }
 
         switch (super.getDirection()) {
-            case Direction.IDLE -> image = super.getIdleSprites()[getSpriteValue()];
-            case Direction.JUMP -> image = super.getJumpSprites()[getSpriteValue()];
-            case Direction.LEFT -> image = super.getLeftSprites()[getSpriteValue()];
-            case Direction.RIGHT -> image = super.getRightSprites()[getSpriteValue()];
+            case Direction.IDLE ->    image = super.getIdleSprites()[getSpriteValue()];
+            case Direction.JUMP ->    image = super.getJumpSprites()[getSpriteValue()];
+            case Direction.LEFT ->    image = super.getLeftSprites()[getSpriteValue()];
+            case Direction.RIGHT ->   image = super.getRightSprites()[getSpriteValue()];
+            case Direction.FALLING -> image = super.getFallingSprites()[getSpriteValue()];
         }
         graphics2D.drawImage(image, screenCenterX, screenCenterY, super.getWidth(), super.getHeight(), null);
     }
