@@ -12,17 +12,16 @@ public class GameWindow extends JPanel implements Runnable{
 
     // Screen Settings //
 
-    final int originalTileSize = 64;
-    final int scale = 1;
     final int maxScreenColumns = 25;
     final int maxScreenRows = 20;
 
-    public final int tileSize = originalTileSize * scale;
+    public final int tileSize = 64;
+
     final int screenWidth = 1280;
     final int screenHeight = 800;
 
     // Game tools //
-    Thread gameThread;
+    Thread gameThread; // separates off the main thread which is running the window
     public int maxFPS = 60;
 
     // Handlers //
@@ -38,7 +37,7 @@ public class GameWindow extends JPanel implements Runnable{
 
     public GameWindow() {
         this.setPreferredSize(new Dimension(screenWidth, screenHeight));
-        this.setBackground(Color.black);
+        this.setBackground(Color.BLACK);
         this.setDoubleBuffered(true);
         this.addKeyListener(keyPressHandler);
         this.setFocusable(true);
@@ -73,7 +72,7 @@ public class GameWindow extends JPanel implements Runnable{
 
 
     }
-    
+
     public void update() {
         this.player.update();
     }

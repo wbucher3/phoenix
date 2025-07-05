@@ -5,7 +5,6 @@ import game.KeyPressHandler;
 import util.Constants;
 
 import java.awt.*;
-import java.awt.image.BufferedImage;
 
 public class Player extends Entity {
 
@@ -29,7 +28,8 @@ public class Player extends Entity {
         super.setJumpPower(22);
         this.screenCenterX = screenCenterX - (super.getWidth() / 2);
         this.screenCenterY = screenCenterY - (super.getHeight() / 2);
-        super.getSpriteImages("./assets/player_sprites/", ".png");
+
+        super.readSpriteImages("./assets/player_sprites/", ".png");
         super.setHitBox(new Rectangle(20, 20, 30, 30));
 
     }

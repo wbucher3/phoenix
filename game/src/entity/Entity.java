@@ -31,27 +31,29 @@ public abstract class Entity {
     private BufferedImage[] fallingSprites;
     private BufferedImage[] jumpSprites;
     private BufferedImage[] walkSprites;
-//    private Direction previousDirection;
 
     // Sprite math
-    private int totalFrames;
     private int frameCounter = 0;
-    private int spriteAnimationSpeed;
+    private final int totalFrames;
+    private final int spriteAnimationSpeed;
 
 
     public Entity(int totalFrames, int spriteAnimationSpeed) {
+        // Basic starting values
         this.totalFrames = totalFrames;
         this.spriteAnimationSpeed = spriteAnimationSpeed;
+        this.direction = Direction.RIGHT;
+
+        // Initialize all array for sprites
         this.walkSprites = new BufferedImage[totalFrames];
         this.idleSprites = new BufferedImage[totalFrames];
         this.jumpSprites = new BufferedImage[totalFrames];
         this.fallingSprites = new BufferedImage[totalFrames];
-        this.direction = Direction.RIGHT;
     }
 
     abstract public void update();
 
-    public void getSpriteImages(String spriteDirectoryPath, String fileExtension) {
+    public void readSpriteImages(String spriteDirectoryPath, String fileExtension) {
         try {
             for (int i = 0; i < this.getTotalFrames() ; i++) {
                 String walkPath = spriteDirectoryPath + "walk/" + i + fileExtension;
