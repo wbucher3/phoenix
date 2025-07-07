@@ -86,9 +86,12 @@ public abstract class Entity {
         }
         if (this.getDirection() == Direction.RIGHT) {
             graphics2D.drawImage(image, x, y, this.getWidth(), this.getHeight(), null);
+
         } else {
             graphics2D.drawImage(image, x + this.getWidth(), y, -this.getWidth(), this.getHeight(), null);
         }
+        graphics2D.draw(new Rectangle(x + this.getHitBox().x, y + this.getHitBox().y, this.hitBox.width, this.hitBox.height));
+        graphics2D.draw(this.hitBox);
     }
 
     // TODO there has to be a better way to do this with math but I am lazy right now

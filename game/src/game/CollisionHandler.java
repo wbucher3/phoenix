@@ -21,7 +21,7 @@ public class CollisionHandler {
         // gets the tiles we are in (bottom row and the two columns above it)
         int entityLeftColumn = entityX1 / gameWindow.tileSize;
         int entityRightColumn = entityX2 / gameWindow.tileSize;
-        int entityBottomRow = (entityY2 + entity.getJumpPower()) / gameWindow.tileSize;
+        int entityBottomRow = ((entityY2 + entity.getJumpPower()) / gameWindow.tileSize);
 
         // get the type of tile
         int leftFloorTile = gameWindow.tileHandler.getTileMap()[entityBottomRow][entityLeftColumn];

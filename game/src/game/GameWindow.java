@@ -22,7 +22,7 @@ public class GameWindow extends JPanel implements Runnable{
 
     // Game tools //
     Thread gameThread; // separates off the main thread which is running the window
-    public int maxFPS = 60;
+    public int maxFPS = 120;
 
     // Handlers //
     KeyPressHandler keyPressHandler = new KeyPressHandler();
@@ -32,7 +32,7 @@ public class GameWindow extends JPanel implements Runnable{
     Player player = new Player(keyPressHandler, collisionHandler, screenWidth / 2, screenHeight / 2);
 
     // Map //
-    TileInformation level1 = new TileInformation("./assets/maps/testmap.csv", "./assets/tiles/", new String[]{"stone-block", "wood-block"}, new boolean[]{false, true});
+    TileInformation level1 = new TileInformation("./assets/maps/testmap1.csv", "./assets/tiles/", new String[]{"stone-block", "wood-block"}, new boolean[]{false, true});
     TileHandler tileHandler = new TileHandler(maxScreenRows, maxScreenColumns, tileSize, 2, level1);
 
     public GameWindow() {

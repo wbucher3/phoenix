@@ -30,12 +30,14 @@ public class Player extends Entity {
         this.screenCenterY = screenCenterY - (super.getHeight() / 2);
 
         super.readSpriteImages("./assets/player_sprites/", ".png");
-        super.setHitBox(new Rectangle(20, 20, 30, 30));
+        super.setHitBox(new Rectangle(10, 10, 40, 40));
 
     }
 
+
     public void drawPlayer(Graphics2D graphics2D) {
-        super.draw(graphics2D, screenCenterX, screenCenterY);
+        // player is always in the center of the screen
+        super.draw(graphics2D, this.screenCenterX, this.screenCenterY);
     }
 
     public void update() {
