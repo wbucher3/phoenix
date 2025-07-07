@@ -11,7 +11,7 @@ public class KeyPressHandler extends KeyAdapter {
     public boolean upPressed, downPressed, leftPressed, rightPressed, jumpPressed = false;
 
     public boolean isKeyPressed() {
-        return this.rightPressed || this.leftPressed || this.jumpPressed;
+        return this.rightPressed || this.leftPressed || this.upPressed || this.downPressed;
     }
 
     @Override
@@ -24,8 +24,18 @@ public class KeyPressHandler extends KeyAdapter {
         if (ControlBindings.RIGHT == code) {
             this.rightPressed = true;
         }
+        if (ControlBindings.UP == code) {
+            this.upPressed = true;
+        }
+        if (ControlBindings.DOWN == code) {
+            this.downPressed = true;
+        }
         if (ControlBindings.SPACE == code) {
             this.jumpPressed = true;
+        }
+
+        if (KeyEvent.VK_ESCAPE == code) {
+            System.exit(42069);
         }
 
     }
@@ -35,11 +45,17 @@ public class KeyPressHandler extends KeyAdapter {
 
         int code = keyEvent.getKeyCode();
 
-        if (KeyEvent.VK_A == code) {
+        if (ControlBindings.LEFT == code) {
             this.leftPressed = false;
         }
-        if (KeyEvent.VK_D == code) {
+        if (ControlBindings.RIGHT == code) {
             this.rightPressed = false;
+        }
+        if (ControlBindings.UP == code) {
+            this.upPressed = false;
+        }
+        if (ControlBindings.DOWN == code) {
+            this.downPressed = false;
         }
         if (KeyEvent.VK_SPACE == code) {
             this.jumpPressed = false;

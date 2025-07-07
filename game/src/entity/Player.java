@@ -2,7 +2,6 @@ package entity;
 
 import game.CollisionHandler;
 import game.KeyPressHandler;
-import util.Constants;
 
 import java.awt.*;
 
@@ -15,25 +14,22 @@ public class Player extends Entity {
     private final int screenCenterY;
 
     public Player(KeyPressHandler keyPressHandler, CollisionHandler collisionHandler, int screenCenterX, int screenCenterY) {
-        super(6, 60);
+        super(8, 32);
         this.keyPressHandler = keyPressHandler;
         this.collisionHandler = collisionHandler;
 
-        super.setX(200);
-        super.setY(200);
+        super.setX(3 * 64);
+        super.setY(3 * 64);
         super.setWidth(64);
         super.setHeight(64);
         super.setSpeed(8);
-        super.setJumpFrames(10);
-        super.setJumpPower(22);
         this.screenCenterX = screenCenterX - (super.getWidth() / 2);
         this.screenCenterY = screenCenterY - (super.getHeight() / 2);
 
-        super.readSpriteImages("./assets/player_sprites/", ".png");
+        super.readSpriteImages("./assets/cat/", ".png");
         super.setHitBox(new Rectangle(10, 10, 40, 40));
 
     }
-
 
     public void drawPlayer(Graphics2D graphics2D) {
         // player is always in the center of the screen
@@ -53,17 +49,18 @@ public class Player extends Entity {
         if (keyPressHandler.isKeyPressed()) {
             if (keyPressHandler.rightPressed) {
                 super.setDirection(Direction.RIGHT);
-                super.setCurrentState(State.WALK);
             }
             if (keyPressHandler.leftPressed) {
                 super.setDirection(Direction.LEFT);
-                super.setCurrentState(State.WALK);
             }
-            if (keyPressHandler.jumpPressed) {
-                super.setCurrentState(State.JUMP);
+            if (keyPressHandler.upPressed) {
+                super.setDirection(Direction.UP);
             }
-        } else if (!this.collisionHandler.checkFloorCollision(this)) {
-            super.setCurrentState(State.FALLING);
+            if (keyPressHandler.downPressed) {
+                super.setDirection(Direction.DOWN);
+            }
+            super.setCurrentState(State.WALK);
+
         } else {
             super.setCurrentState(State.IDLE);
         }
@@ -76,20 +73,14 @@ public class Player extends Entity {
         if (keyPressHandler.leftPressed && !this.collisionHandler.checkLeftWallCollision(this)) {
             super.setX(super.getX() - super.getSpeed());
         }
-
-        if (keyPressHandler.jumpPressed && !this.collisionHandler.checkCeilingCollision(this) && super.getJumpFrames() < 10) {
-            super.setJumpFrames(super.getJumpFrames() + 1);
-            super.setY(super.getY() - super.getJumpPower());
+        if (keyPressHandler.upPressed && !this.collisionHandler.checkUpCollision(this)) {
+            super.setY(super.getY() - super.getSpeed());
         }
-
-        if (!this.collisionHandler.checkFloorCollision(this)) {
-            super.setY(super.getY() + Constants.GRAVITY);
-        } else {
-            super.setJumpFrames(0);
+        if (keyPressHandler.downPressed && !this.collisionHandler.checkDownCollision(this)) {
+            super.setY(super.getY() + super.getSpeed());
         }
 
     }
-
 
     // Needed for drawing of tiles
     public int getScreenCenterX() { return screenCenterX; }

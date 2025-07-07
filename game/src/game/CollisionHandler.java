@@ -10,7 +10,7 @@ public class CollisionHandler {
         this.gameWindow = gameWindow;
     }
 
-    public boolean checkFloorCollision(Entity entity) {
+    public boolean checkDownCollision(Entity entity) {
 
         // Get corners of entity hitbox
         int entityX1 = entity.getX() + entity.getHitBox().x;
@@ -21,17 +21,17 @@ public class CollisionHandler {
         // gets the tiles we are in (bottom row and the two columns above it)
         int entityLeftColumn = entityX1 / gameWindow.tileSize;
         int entityRightColumn = entityX2 / gameWindow.tileSize;
-        int entityBottomRow = ((entityY2 + entity.getJumpPower()) / gameWindow.tileSize);
+        int entityBottomRow = ((entityY2 + entity.getSpeed()) / gameWindow.tileSize);
 
         // get the type of tile
-        int leftFloorTile = gameWindow.tileHandler.getTileMap()[entityBottomRow][entityLeftColumn];
-        int rightFloorTile = gameWindow.tileHandler.getTileMap()[entityBottomRow][entityRightColumn];
+        int leftDownTile = gameWindow.tileHandler.getTileMap()[entityBottomRow][entityLeftColumn];
+        int rightDownTile = gameWindow.tileHandler.getTileMap()[entityBottomRow][entityRightColumn];
 
         // check if the tile type is collidable
-        return gameWindow.tileHandler.getTiles()[leftFloorTile].isCollidable() || gameWindow.tileHandler.getTiles()[rightFloorTile].isCollidable();
+        return gameWindow.tileHandler.getTiles()[leftDownTile].isCollidable() || gameWindow.tileHandler.getTiles()[rightDownTile].isCollidable();
     }
 
-    public boolean checkCeilingCollision (Entity entity) {
+    public boolean checkUpCollision(Entity entity) {
 
         int entityX1 = entity.getX() + entity.getHitBox().x;
         int entityX2 = entityX1 + entity.getHitBox().width;
@@ -40,12 +40,12 @@ public class CollisionHandler {
 
         int entityLeftColumn = entityX1 / gameWindow.tileSize;
         int entityRightColumn = entityX2 / gameWindow.tileSize;
-        int entityTopRow = (entityY1 - entity.getJumpPower()) / gameWindow.tileSize;
+        int entityTopRow = (entityY1 - entity.getSpeed()) / gameWindow.tileSize;
 
-        int leftCeilingTile = gameWindow.tileHandler.getTileMap()[entityTopRow][entityLeftColumn];
-        int rightCeilingTile = gameWindow.tileHandler.getTileMap()[entityTopRow][entityRightColumn];
+        int leftUpTile = gameWindow.tileHandler.getTileMap()[entityTopRow][entityLeftColumn];
+        int rightUpTile = gameWindow.tileHandler.getTileMap()[entityTopRow][entityRightColumn];
 
-        return gameWindow.tileHandler.getTiles()[leftCeilingTile].isCollidable() || gameWindow.tileHandler.getTiles()[rightCeilingTile].isCollidable();
+        return gameWindow.tileHandler.getTiles()[leftUpTile].isCollidable() || gameWindow.tileHandler.getTiles()[rightUpTile].isCollidable();
     }
 
     public boolean checkRightWallCollision(Entity entity) {

@@ -14,8 +14,6 @@ public abstract class Entity {
     private int height;
     private int width;
     private int speed;
-    private int jumpPower;
-    private int jumpFrames;
 
     private Direction direction;
     private State currentState;
@@ -27,10 +25,10 @@ public abstract class Entity {
 
     // Sprite Fields
     private BufferedImage[] idleSprites;
-    private BufferedImage[] duckSprites;
-    private BufferedImage[] fallingSprites;
-    private BufferedImage[] jumpSprites;
-    private BufferedImage[] walkSprites;
+    private BufferedImage[] walkRightSprites;
+    private BufferedImage[] walkLeftSprites;
+    private BufferedImage[] walkUpSprites;
+    private BufferedImage[] walkDownSprites;
 
     // Sprite math
     private int frameCounter = 0;
@@ -44,11 +42,13 @@ public abstract class Entity {
         this.spriteAnimationSpeed = spriteAnimationSpeed;
         this.direction = Direction.RIGHT;
 
+
         // Initialize all array for sprites
-        this.walkSprites = new BufferedImage[totalFrames];
+        this.walkRightSprites = new BufferedImage[totalFrames];
+        this.walkLeftSprites = new BufferedImage[totalFrames];
+        this.walkDownSprites = new BufferedImage[totalFrames];
+        this.walkUpSprites = new BufferedImage[totalFrames];
         this.idleSprites = new BufferedImage[totalFrames];
-        this.jumpSprites = new BufferedImage[totalFrames];
-        this.fallingSprites = new BufferedImage[totalFrames];
     }
 
     abstract public void update();
@@ -56,15 +56,18 @@ public abstract class Entity {
     public void readSpriteImages(String spriteDirectoryPath, String fileExtension) {
         try {
             for (int i = 0; i < this.getTotalFrames() ; i++) {
-                String walkPath = spriteDirectoryPath + "walk/" + i + fileExtension;
-                String idlePath = spriteDirectoryPath + "idle/" + i + fileExtension;
-                String jumpPath = spriteDirectoryPath + "jump/" + i + fileExtension;
-                String fallingPath = spriteDirectoryPath + "falling/" + i + fileExtension;
+                String walkRightPath = spriteDirectoryPath + "right_walk/" + i + fileExtension;
+                String walkLeftPath = spriteDirectoryPath + "left_walk/" + i + fileExtension;
+                String walkDownPath = spriteDirectoryPath + "down_walk/" + i + fileExtension;
+                String walkUpPath = spriteDirectoryPath + "up_walk/" + i + fileExtension;
+//                String idlePath = spriteDirectoryPath + "idle/" + i + fileExtension;
 
-                this.getIdleSprites()[i] = ImageIO.read(new File(idlePath));
-                this.getWalkSprites()[i] = ImageIO.read(new File(walkPath));
-                this.getJumpSprites()[i] = ImageIO.read(new File(jumpPath));
-                this.getFallingSprites()[i] = ImageIO.read(new File(fallingPath));
+                this.idleSprites[i] = ImageIO.read(new File(walkUpPath));
+                this.walkUpSprites[i] = ImageIO.read(new File(walkUpPath));
+                this.walkDownSprites[i] = ImageIO.read(new File(walkDownPath));
+                this.walkRightSprites[i] = ImageIO.read(new File(walkRightPath));
+                this.walkLeftSprites[i] = ImageIO.read(new File(walkLeftPath));
+
             }
         } catch (IOException | NullPointerException e) {
             throw new RuntimeException("Ran into an error fetching sprite images. Expected image path: " + spriteDirectoryPath);
@@ -78,39 +81,36 @@ public abstract class Entity {
             this.setFrameCounter(0);
         }
 
-        switch (this.getCurrentState()) {
-            case State.IDLE ->    image = this.getIdleSprites()[getSpriteValue()];
-            case State.JUMP ->    image = this.getJumpSprites()[getSpriteValue()];
-            case State.WALK ->    image = this.getWalkSprites()[getSpriteValue()];
-            case State.FALLING -> image = this.getFallingSprites()[getSpriteValue()];
-        }
-        if (this.getDirection() == Direction.RIGHT) {
-            graphics2D.drawImage(image, x, y, this.getWidth(), this.getHeight(), null);
-
+        if (this.currentState == State.WALK) {
+            switch (this.getDirection()) {
+                case Direction.UP -> image = this.walkUpSprites[getSpriteValue()];
+                case Direction.RIGHT -> image = this.walkRightSprites[getSpriteValue()];
+                case Direction.DOWN -> image = this.walkDownSprites[getSpriteValue()];
+                case Direction.LEFT -> image = this.walkLeftSprites[getSpriteValue()];
+            }
         } else {
-            graphics2D.drawImage(image, x + this.getWidth(), y, -this.getWidth(), this.getHeight(), null);
+            image = this.walkUpSprites[0];
         }
-        graphics2D.draw(new Rectangle(x + this.getHitBox().x, y + this.getHitBox().y, this.hitBox.width, this.hitBox.height));
-        graphics2D.draw(this.hitBox);
+        graphics2D.drawImage(image, x, y, this.getWidth(), this.getHeight(), null);
+
     }
 
     // TODO there has to be a better way to do this with math but I am lazy right now
     // There's a good chance this stays forever lol
     private int getSpriteValue() {
         int spriteValue;
-        if (this.getFrameCounter() >= 0 && this.getFrameCounter() < 10) spriteValue = 0;
-        else if (this.getFrameCounter() >= 10 && this.getFrameCounter() < 20) spriteValue = 1;
-        else if (this.getFrameCounter() >= 20 && this.getFrameCounter() < 30) spriteValue = 2;
-        else if (this.getFrameCounter() >= 30 && this.getFrameCounter() < 40) spriteValue = 3;
-        else if (this.getFrameCounter() >= 40 && this.getFrameCounter() < 50) spriteValue = 4;
-        else spriteValue = 5;
+        if (this.getFrameCounter() >= 0 && this.getFrameCounter() < (spriteAnimationSpeed / totalFrames) * 1) spriteValue = 0;
+        else if (this.getFrameCounter() >= (spriteAnimationSpeed / totalFrames) * 1 && this.getFrameCounter() < (spriteAnimationSpeed / totalFrames) * 2) spriteValue = 1;
+        else if (this.getFrameCounter() >= (spriteAnimationSpeed / totalFrames) * 2 && this.getFrameCounter() < (spriteAnimationSpeed / totalFrames) * 3) spriteValue = 2;
+        else if (this.getFrameCounter() >= (spriteAnimationSpeed / totalFrames) * 3 && this.getFrameCounter() < (spriteAnimationSpeed / totalFrames) * 4) spriteValue = 3;
+        else if (this.getFrameCounter() >= (spriteAnimationSpeed / totalFrames) * 4 && this.getFrameCounter() < (spriteAnimationSpeed / totalFrames) * 5) spriteValue = 4;
+        else if (this.getFrameCounter() >= (spriteAnimationSpeed / totalFrames) * 5 && this.getFrameCounter() < (spriteAnimationSpeed / totalFrames) * 6) spriteValue = 5;
+        else if (this.getFrameCounter() >= (spriteAnimationSpeed / totalFrames) * 6 && this.getFrameCounter() < (spriteAnimationSpeed / totalFrames) * 7) spriteValue = 6;
+        else spriteValue = 7;
         return spriteValue;
     }
 
 
-    public BufferedImage[] getWalkSprites() {
-        return walkSprites;
-    }
 
     public int getTotalFrames() {
         return totalFrames;
@@ -138,14 +138,7 @@ public abstract class Entity {
     }
 
 
-    public BufferedImage[] getDuckSprites() {
-        return duckSprites;
-    }
 
-
-    public BufferedImage[] getJumpSprites() {
-        return jumpSprites;
-    }
 
     public int getX() {
         return x;
@@ -199,25 +192,6 @@ public abstract class Entity {
         this.hitBox = hitBox;
     }
 
-    public int getJumpPower() { return jumpPower; }
-
-    public void setJumpPower(int jumpPower) { this.jumpPower = jumpPower; }
-
-    public int getJumpFrames() {
-        return jumpFrames;
-    }
-
-    public void setJumpFrames(int jumpFrames) {
-        this.jumpFrames = jumpFrames;
-    }
-
-    public BufferedImage[] getFallingSprites() {
-        return fallingSprites;
-    }
-
-    public void setFallingSprites(BufferedImage[] fallingSprites) {
-        this.fallingSprites = fallingSprites;
-    }
 
     public State getCurrentState() {
         return currentState;

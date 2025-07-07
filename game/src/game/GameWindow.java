@@ -17,29 +17,34 @@ public class GameWindow extends JPanel implements Runnable{
 
     public final int tileSize = 64;
 
-    final int screenWidth = 1280;
-    final int screenHeight = 800;
+//    final int screenWidth = 1280;
+//    final int screenHeight = 800;
+    final int screenWidth = 1920;
+    final int screenHeight = 1080;
+
 
     // Game tools //
     Thread gameThread; // separates off the main thread which is running the window
-    public int maxFPS = 120;
+    public int maxFPS = 60;
 
     // Handlers //
     KeyPressHandler keyPressHandler = new KeyPressHandler();
     CollisionHandler collisionHandler = new CollisionHandler(this);
+    MouseHandler mouseHandler = new MouseHandler();
 
     // Player Information //
     Player player = new Player(keyPressHandler, collisionHandler, screenWidth / 2, screenHeight / 2);
 
     // Map //
-    TileInformation level1 = new TileInformation("./assets/maps/testmap1.csv", "./assets/tiles/", new String[]{"stone-block", "wood-block"}, new boolean[]{false, true});
+    TileInformation level1 = new TileInformation("./assets/maps/testmap2.csv", "./assets/tiles/", new String[]{"stone-block", "wood-block"}, new boolean[]{false, true});
     TileHandler tileHandler = new TileHandler(maxScreenRows, maxScreenColumns, tileSize, 2, level1);
 
     public GameWindow() {
-        this.setPreferredSize(new Dimension(screenWidth, screenHeight));
+//        this.setPreferredSize(new Dimension(screenWidth, screenHeight));
         this.setBackground(Color.BLACK);
         this.setDoubleBuffered(true);
         this.addKeyListener(keyPressHandler);
+        this.addMouseListener(mouseHandler);
         this.setFocusable(true);
     }
 

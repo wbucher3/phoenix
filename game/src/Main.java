@@ -1,7 +1,6 @@
-package game;
+import game.GameWindow;
 
 import javax.swing.*;
-import java.awt.*;
 
 public class Main {
     public static void main(String[] args) {
@@ -16,6 +15,7 @@ public class Main {
         window.setLocationRelativeTo(null);
 
         GameWindow gameWindow = new GameWindow();
+        window.setExtendedState(JFrame.MAXIMIZED_BOTH);
         window.add(gameWindow);
         window.pack();
         window.setVisible(true);
