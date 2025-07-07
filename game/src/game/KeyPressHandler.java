@@ -4,13 +4,12 @@ import util.ControlBindings;
 
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
 
 public class KeyPressHandler extends KeyAdapter {
 
-    public boolean upPressed, downPressed, leftPressed, rightPressed, jumpPressed = false;
+    public boolean upPressed, downPressed, leftPressed, rightPressed = false;
 
-    public boolean isKeyPressed() {
+    public boolean isMovementKeyPressed() {
         return this.rightPressed || this.leftPressed || this.upPressed || this.downPressed;
     }
 
@@ -29,9 +28,6 @@ public class KeyPressHandler extends KeyAdapter {
         }
         if (ControlBindings.DOWN == code) {
             this.downPressed = true;
-        }
-        if (ControlBindings.SPACE == code) {
-            this.jumpPressed = true;
         }
 
         if (KeyEvent.VK_ESCAPE == code) {
@@ -56,9 +52,6 @@ public class KeyPressHandler extends KeyAdapter {
         }
         if (ControlBindings.DOWN == code) {
             this.downPressed = false;
-        }
-        if (KeyEvent.VK_SPACE == code) {
-            this.jumpPressed = false;
         }
 
     }

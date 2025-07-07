@@ -36,7 +36,7 @@ public class GameWindow extends JPanel implements Runnable{
     Player player = new Player(keyPressHandler, collisionHandler, screenWidth / 2, screenHeight / 2);
 
     // Map //
-    TileInformation level1 = new TileInformation("./assets/maps/testmap2.csv", "./assets/tiles/", new String[]{"stone-block", "wood-block"}, new boolean[]{false, true});
+    TileInformation level1 = new TileInformation("./assets/maps/testmap2.csv", "./assets/tiles/", new String[]{"grass-block", "stone-block"}, new boolean[]{false, true});
     TileHandler tileHandler = new TileHandler(maxScreenRows, maxScreenColumns, tileSize, 2, level1);
 
     public GameWindow() {

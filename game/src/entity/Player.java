@@ -14,7 +14,7 @@ public class Player extends Entity {
     private final int screenCenterY;
 
     public Player(KeyPressHandler keyPressHandler, CollisionHandler collisionHandler, int screenCenterX, int screenCenterY) {
-        super(8, 32);
+        super(8, 32); // animation speed % total frames === 0 for smooth animations
         this.keyPressHandler = keyPressHandler;
         this.collisionHandler = collisionHandler;
 
@@ -27,7 +27,7 @@ public class Player extends Entity {
         this.screenCenterY = screenCenterY - (super.getHeight() / 2);
 
         super.readSpriteImages("./assets/cat/", ".png");
-        super.setHitBox(new Rectangle(10, 10, 40, 40));
+        super.setHitBox(new Rectangle(20, 30, 20, 20));
 
     }
 
@@ -46,7 +46,7 @@ public class Player extends Entity {
         super.setPreviousState(super.getCurrentState());
 
         // MOVEMENT
-        if (keyPressHandler.isKeyPressed()) {
+        if (keyPressHandler.isMovementKeyPressed()) {
             if (keyPressHandler.rightPressed) {
                 super.setDirection(Direction.RIGHT);
             }

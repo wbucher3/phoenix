@@ -40,7 +40,7 @@ public abstract class Entity {
         // Basic starting values
         this.totalFrames = totalFrames;
         this.spriteAnimationSpeed = spriteAnimationSpeed;
-        this.direction = Direction.RIGHT;
+        this.direction = Direction.DOWN;
 
 
         // Initialize all array for sprites
@@ -89,7 +89,7 @@ public abstract class Entity {
                 case Direction.LEFT -> image = this.walkLeftSprites[getSpriteValue()];
             }
         } else {
-            image = this.walkUpSprites[0];
+            image = this.walkDownSprites[0];
         }
         graphics2D.drawImage(image, x, y, this.getWidth(), this.getHeight(), null);
 
