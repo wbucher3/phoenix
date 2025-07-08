@@ -1,4 +1,4 @@
-import game.GameWindow;
+import game.AbstractFloor;
 
 import javax.swing.*;
 
@@ -14,12 +14,14 @@ public class Main {
         window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         window.setLocationRelativeTo(null);
 
-        GameWindow gameWindow = new GameWindow();
+        AbstractFloor abstractFloor = new AbstractFloor();
         window.setExtendedState(JFrame.MAXIMIZED_BOTH);
-        window.add(gameWindow);
+        window.add(abstractFloor);
         window.pack();
         window.setVisible(true);
 
-        gameWindow.startGameThread();
+
+        // starts level
+        abstractFloor.startGameThread();
     }
 }

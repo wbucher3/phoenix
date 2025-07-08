@@ -80,7 +80,6 @@ public class TileHandler {
                         && worldY - tileSize < player.getY() + player.getScreenCenterY()) {
 
                     this.getTiles()[this.tileMap[y][x]].draw(graphics2D, screenX, screenY, this.tileSize);
-
                 }
 
 

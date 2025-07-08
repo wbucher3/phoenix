@@ -1,5 +1,7 @@
 package tile;
 
+import util.UtilityFunctions;
+
 import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -13,15 +15,7 @@ public class Tile {
 
     public Tile(String tileDirectoryPath, String tileFileName, String fileExtension, boolean collidable) {
         this.collidable = collidable;
-        this.initializeTileImage(tileDirectoryPath, tileFileName, fileExtension);
-    }
-
-    private void initializeTileImage(String tileDirectoryPath, String tileFileName, String fileExtension) {
-        try {
-            this.setImage(ImageIO.read(new File(tileDirectoryPath + tileFileName + fileExtension)));
-        } catch (IOException | NullPointerException e) {
-            throw new RuntimeException("Ran into an error fetching tile image. Expected image path: " + tileDirectoryPath);
-        }
+        this.image = UtilityFunctions.readImageFile(tileDirectoryPath, tileFileName, fileExtension);
     }
 
     public void draw(Graphics2D graphics2D, int x, int y, int tileSize) {

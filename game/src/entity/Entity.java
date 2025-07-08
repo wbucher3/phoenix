@@ -1,5 +1,7 @@
 package entity;
 
+import util.UtilityFunctions;
+
 import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -54,23 +56,12 @@ public abstract class Entity {
     abstract public void update();
 
     public void readSpriteImages(String spriteDirectoryPath, String fileExtension) {
-        try {
-            for (int i = 0; i < this.getTotalFrames() ; i++) {
-                String walkRightPath = spriteDirectoryPath + "right_walk/" + i + fileExtension;
-                String walkLeftPath = spriteDirectoryPath + "left_walk/" + i + fileExtension;
-                String walkDownPath = spriteDirectoryPath + "down_walk/" + i + fileExtension;
-                String walkUpPath = spriteDirectoryPath + "up_walk/" + i + fileExtension;
-//                String idlePath = spriteDirectoryPath + "idle/" + i + fileExtension;
-
-                this.idleSprites[i] = ImageIO.read(new File(walkUpPath));
-                this.walkUpSprites[i] = ImageIO.read(new File(walkUpPath));
-                this.walkDownSprites[i] = ImageIO.read(new File(walkDownPath));
-                this.walkRightSprites[i] = ImageIO.read(new File(walkRightPath));
-                this.walkLeftSprites[i] = ImageIO.read(new File(walkLeftPath));
-
-            }
-        } catch (IOException | NullPointerException e) {
-            throw new RuntimeException("Ran into an error fetching sprite images. Expected image path: " + spriteDirectoryPath);
+        for (int i = 0; i < this.getTotalFrames() ; i++) {
+            this.idleSprites[i] = UtilityFunctions.readImageFile(spriteDirectoryPath + "right_walk/", String.valueOf(i), fileExtension);
+            this.walkUpSprites[i] = UtilityFunctions.readImageFile(spriteDirectoryPath + "up_walk/", String.valueOf(i), fileExtension);
+            this.walkDownSprites[i] = UtilityFunctions.readImageFile(spriteDirectoryPath + "down_walk/", String.valueOf(i), fileExtension);
+            this.walkRightSprites[i] = UtilityFunctions.readImageFile(spriteDirectoryPath + "right_walk/", String.valueOf(i), fileExtension);
+            this.walkLeftSprites[i] = UtilityFunctions.readImageFile(spriteDirectoryPath + "left_walk/", String.valueOf(i), fileExtension);
         }
     }
 
