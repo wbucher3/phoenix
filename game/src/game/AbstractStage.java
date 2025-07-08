@@ -1,72 +1,52 @@
 package game;
 
 import entity.Player;
-import interactable.Chest;
-import interactable.Door;
-import interactable.Key;
 import interactable.ParentInteractable;
 import tile.TileHandler;
 import tile.TileInformation;
+import util.Constants;
 
 import javax.swing.*;
 import java.awt.*;
 
-public class AbstractFloor extends JPanel implements Runnable{
-
-    // Screen Settings //
-    final int screenWidth = 1920;
-    final int screenHeight = 1080;
-
-    final int maxMapColumns = 25;
-    final int maxMapRows = 20;
-
-    public final int tileSize = 64;
+public abstract class AbstractStage extends JPanel implements Runnable{
 
     // Game tools //
     Thread gameThread; // separates off the main thread which is running the window
-    public int maxFPS = 60;
 
     // Map //
-    TileInformation level1 = new TileInformation("./assets/maps/testmap2.csv", "./assets/tiles/", new String[]{"grass-block", "stone-block"}, new boolean[]{false, true});
-    TileHandler tileHandler = new TileHandler(maxMapRows, maxMapColumns, tileSize, 2, level1);
+    TileInformation tileInformation;
+    TileHandler tileHandler;
 
     // Handlers //
     KeyPressHandler keyPressHandler = new KeyPressHandler();
     CollisionHandler collisionHandler = new CollisionHandler(this);
     MouseHandler mouseHandler = new MouseHandler();
 
-
     // Player Information //
-    Player player = new Player(keyPressHandler, collisionHandler, screenWidth / 2, screenHeight / 2);
-
+    Player player = new Player(keyPressHandler, collisionHandler, Constants.SCREEN_WIDTH / 2, Constants.SCREEN_HEIGHT / 2);
 
     // Items //
-    public ParentInteractable[] items = new ParentInteractable[10];
+    ParentInteractable[] items;
 
 
-    public AbstractFloor() {
+    /**
+     * Constructor (duh) creates the stage...
+     * */
+    public AbstractStage(int maxMapRows, int maxMapColumns, TileInformation tileInformation, ParentInteractable[] items) {
+        // JPanel Set Up
         super.setBackground(Color.BLACK);
         super.setDoubleBuffered(true);
         super.addKeyListener(keyPressHandler);
         super.addMouseListener(mouseHandler);
         super.setFocusable(true);
 
-        // Sets up the item pool
-        this.initializeGame();
+        // Stage Set Up
+        this.tileInformation = tileInformation;
+        this.tileHandler = new TileHandler(maxMapRows, maxMapColumns, Constants.TILE_SIZE, 2, tileInformation);
+        this.items = items;
     }
 
-
-    /**
-     * Creates all the interactable objects for the world
-     * */
-    public void initializeGame() {
-        // Create all the assets
-        items[0] = new Key("Key 1",  tileSize * 6, tileSize * 4, false);
-        items[1] = new Door("Door 1 Left",  tileSize * 6, tileSize * 6, false);
-        items[2] = new Door("Door 1 Right",  tileSize * 7, tileSize * 6, false);
-        items[3] = new Chest("Chest 1",  tileSize * 14, tileSize * 9, false);
-        items[4] = new Key("Key 2",  tileSize * 14, tileSize * 12, false);
-    }
 
     /**
      * Creates a new thread and starts it
@@ -85,7 +65,7 @@ public class AbstractFloor extends JPanel implements Runnable{
     public void run() {
 
         // Game is locked to FPS value or less
-        double drawInterval = (double) 1000000000 / this.maxFPS;
+        double drawInterval = (double) 1000000000 / Constants.GAME_FPS;
         double delta = 0;
         long lastTime = System.nanoTime();
         long currentTime;

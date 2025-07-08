@@ -1,13 +1,14 @@
 package game;
 
 import entity.Entity;
+import util.Constants;
 
 public class CollisionHandler {
 
-    private final AbstractFloor abstractFloor;
+    private final AbstractStage abstractStage;
 
-    public CollisionHandler(AbstractFloor abstractFloor) {
-        this.abstractFloor = abstractFloor;
+    public CollisionHandler(AbstractStage abstractStage) {
+        this.abstractStage = abstractStage;
     }
 
     public boolean checkDownCollision(Entity entity) {
@@ -19,16 +20,16 @@ public class CollisionHandler {
         int entityY2 = entityY1 + entity.getHitBox().height;
 
         // gets the tiles we are in (bottom row and the two columns above it)
-        int entityLeftColumn = entityX1 / abstractFloor.tileSize;
-        int entityRightColumn = entityX2 / abstractFloor.tileSize;
-        int entityBottomRow = ((entityY2 + entity.getSpeed()) / abstractFloor.tileSize);
+        int entityLeftColumn = entityX1 / Constants.TILE_SIZE;
+        int entityRightColumn = entityX2 / Constants.TILE_SIZE;
+        int entityBottomRow = ((entityY2 + entity.getSpeed()) / Constants.TILE_SIZE);
 
         // get the type of tile
-        int leftDownTile = abstractFloor.tileHandler.getTileMap()[entityBottomRow][entityLeftColumn];
-        int rightDownTile = abstractFloor.tileHandler.getTileMap()[entityBottomRow][entityRightColumn];
+        int leftDownTile = abstractStage.tileHandler.getTileMap()[entityBottomRow][entityLeftColumn];
+        int rightDownTile = abstractStage.tileHandler.getTileMap()[entityBottomRow][entityRightColumn];
 
         // check if the tile type is collidable
-        return abstractFloor.tileHandler.getTiles()[leftDownTile].isCollidable() || abstractFloor.tileHandler.getTiles()[rightDownTile].isCollidable();
+        return abstractStage.tileHandler.getTiles()[leftDownTile].isCollidable() || abstractStage.tileHandler.getTiles()[rightDownTile].isCollidable();
     }
 
     public boolean checkUpCollision(Entity entity) {
@@ -38,14 +39,14 @@ public class CollisionHandler {
         int entityY1 = entity.getY() + entity.getHitBox().y;
         int entityY2 = entityY1 + entity.getHitBox().height;
 
-        int entityLeftColumn = entityX1 / abstractFloor.tileSize;
-        int entityRightColumn = entityX2 / abstractFloor.tileSize;
-        int entityTopRow = (entityY1 - entity.getSpeed()) / abstractFloor.tileSize;
+        int entityLeftColumn = entityX1 / Constants.TILE_SIZE;
+        int entityRightColumn = entityX2 / Constants.TILE_SIZE;
+        int entityTopRow = (entityY1 - entity.getSpeed()) / Constants.TILE_SIZE;
 
-        int leftUpTile = abstractFloor.tileHandler.getTileMap()[entityTopRow][entityLeftColumn];
-        int rightUpTile = abstractFloor.tileHandler.getTileMap()[entityTopRow][entityRightColumn];
+        int leftUpTile = abstractStage.tileHandler.getTileMap()[entityTopRow][entityLeftColumn];
+        int rightUpTile = abstractStage.tileHandler.getTileMap()[entityTopRow][entityRightColumn];
 
-        return abstractFloor.tileHandler.getTiles()[leftUpTile].isCollidable() || abstractFloor.tileHandler.getTiles()[rightUpTile].isCollidable();
+        return abstractStage.tileHandler.getTiles()[leftUpTile].isCollidable() || abstractStage.tileHandler.getTiles()[rightUpTile].isCollidable();
     }
 
     public boolean checkRightWallCollision(Entity entity) {
@@ -54,14 +55,14 @@ public class CollisionHandler {
         int entityY1 = entity.getY() + entity.getHitBox().y;
         int entityY2 = entityY1 + entity.getHitBox().height;
 
-        int entityRightColumn = (entityX2 + entity.getSpeed())/ abstractFloor.tileSize;
-        int entityTopRow = entityY1 / abstractFloor.tileSize;
-        int entityBottomRow = entityY2 / abstractFloor.tileSize;
+        int entityRightColumn = (entityX2 + entity.getSpeed())/ Constants.TILE_SIZE;
+        int entityTopRow = entityY1 / Constants.TILE_SIZE;
+        int entityBottomRow = entityY2 / Constants.TILE_SIZE;
 
-        int topWallTile = abstractFloor.tileHandler.getTileMap()[entityTopRow][entityRightColumn];
-        int bottomWallTile = abstractFloor.tileHandler.getTileMap()[entityBottomRow][entityRightColumn];
+        int topWallTile = abstractStage.tileHandler.getTileMap()[entityTopRow][entityRightColumn];
+        int bottomWallTile = abstractStage.tileHandler.getTileMap()[entityBottomRow][entityRightColumn];
 
-        return abstractFloor.tileHandler.getTiles()[topWallTile].isCollidable() || abstractFloor.tileHandler.getTiles()[bottomWallTile].isCollidable();
+        return abstractStage.tileHandler.getTiles()[topWallTile].isCollidable() || abstractStage.tileHandler.getTiles()[bottomWallTile].isCollidable();
     }
     public boolean checkLeftWallCollision(Entity entity) {
         int entityX1 = entity.getX() + entity.getHitBox().x;
@@ -69,14 +70,14 @@ public class CollisionHandler {
         int entityY1 = entity.getY() + entity.getHitBox().y;
         int entityY2 = entityY1 + entity.getHitBox().height;
 
-        int entityLeftColumn = (entityX1 - entity.getSpeed())/ abstractFloor.tileSize;
-        int entityTopRow = entityY1 / abstractFloor.tileSize;
-        int entityBottomRow = entityY2 / abstractFloor.tileSize;
+        int entityLeftColumn = (entityX1 - entity.getSpeed())/ Constants.TILE_SIZE;
+        int entityTopRow = entityY1 / Constants.TILE_SIZE;
+        int entityBottomRow = entityY2 / Constants.TILE_SIZE;
 
-        int topWallTile = abstractFloor.tileHandler.getTileMap()[entityTopRow][entityLeftColumn];
-        int bottomWallTile = abstractFloor.tileHandler.getTileMap()[entityBottomRow][entityLeftColumn];
+        int topWallTile = abstractStage.tileHandler.getTileMap()[entityTopRow][entityLeftColumn];
+        int bottomWallTile = abstractStage.tileHandler.getTileMap()[entityBottomRow][entityLeftColumn];
 
-        return abstractFloor.tileHandler.getTiles()[topWallTile].isCollidable() || abstractFloor.tileHandler.getTiles()[bottomWallTile].isCollidable();
+        return abstractStage.tileHandler.getTiles()[topWallTile].isCollidable() || abstractStage.tileHandler.getTiles()[bottomWallTile].isCollidable();
     }
 
 }

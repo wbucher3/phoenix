@@ -2,6 +2,7 @@ package entity;
 
 import game.CollisionHandler;
 import game.KeyPressHandler;
+import util.Constants;
 
 import java.awt.*;
 
