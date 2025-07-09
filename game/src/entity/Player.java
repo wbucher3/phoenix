@@ -3,6 +3,7 @@ package entity;
 import game.CollisionHandler;
 import game.KeyPressHandler;
 import util.Constants;
+import util.Pair;
 
 import java.awt.*;
 
@@ -66,21 +67,50 @@ public class Player extends Entity {
             super.setCurrentState(State.IDLE);
         }
 
-        // CHECK COLLISION
-        if (keyPressHandler.rightPressed && !this.collisionHandler.checkRightWallCollision(this)) {
-            super.setX(super.getX() + super.getSpeed());
+
+        if (keyPressHandler.rightPressed) {
+            Pair<Boolean, Integer> itemCollision = this.collisionHandler.checkRightItemCollision(this, true);
+            if (!this.collisionHandler.checkRightWallCollision(this) && !itemCollision.getKey()) {
+                super.setX(super.getX() + super.getSpeed());
+            }
+            if (itemCollision.getValue() != -1) {
+                this.handleItemCollision(itemCollision.getValue());
+            }
+        }
+        if (keyPressHandler.leftPressed) {
+            Pair<Boolean, Integer> itemCollision = this.collisionHandler.checkLeftItemCollision(this, true);
+            if (!this.collisionHandler.checkLeftWallCollision(this) && !itemCollision.getKey()) {
+                super.setX(super.getX() - super.getSpeed());
+            }
+            if (itemCollision.getValue() != -1) {
+                this.handleItemCollision(itemCollision.getValue());
+            }
         }
 
-        if (keyPressHandler.leftPressed && !this.collisionHandler.checkLeftWallCollision(this)) {
-            super.setX(super.getX() - super.getSpeed());
-        }
-        if (keyPressHandler.upPressed && !this.collisionHandler.checkUpCollision(this)) {
-            super.setY(super.getY() - super.getSpeed());
-        }
-        if (keyPressHandler.downPressed && !this.collisionHandler.checkDownCollision(this)) {
-            super.setY(super.getY() + super.getSpeed());
+        if (keyPressHandler.upPressed) {
+            Pair<Boolean, Integer> itemCollision = this.collisionHandler.checkUpItemCollision(this, true);
+            if (!this.collisionHandler.checkUpCollision(this) && !itemCollision.getKey()) {
+                super.setY(super.getY() - super.getSpeed());
+            }
+            if (itemCollision.getValue() != -1) {
+                this.handleItemCollision(itemCollision.getValue());
+            }
         }
 
+        if (keyPressHandler.downPressed) {
+            Pair<Boolean, Integer> itemCollision = this.collisionHandler.checkDownItemCollision(this, true);
+            if (!this.collisionHandler.checkDownCollision(this) && !itemCollision.getKey()) {
+                super.setY(super.getY() + super.getSpeed());
+            }
+            if (itemCollision.getValue() != -1) {
+                this.handleItemCollision(itemCollision.getValue());
+            }
+        }
+
+    }
+
+    private void handleItemCollision(int index) {
+        System.out.println("Collided: " + index);
     }
 
     // Needed for drawing of tiles

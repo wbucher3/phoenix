@@ -22,6 +22,8 @@ public abstract class Entity {
     private State previousState;
 
 
+
+
     // collision
     private Rectangle hitBox;
 

@@ -1,7 +1,11 @@
 package game;
 
 import entity.Entity;
+import interactable.ParentInteractable;
 import util.Constants;
+import util.Pair;
+
+import java.awt.*;
 
 public class CollisionHandler {
 
@@ -80,4 +84,41 @@ public class CollisionHandler {
         return abstractStage.tileHandler.getTiles()[topWallTile].isCollidable() || abstractStage.tileHandler.getTiles()[bottomWallTile].isCollidable();
     }
 
+
+    public Pair<Boolean, Integer> checkObjectCollision(Rectangle hitbox) {
+        int index = -1;
+        boolean collision = false;
+
+        for (int i = 0; i < abstractStage.items.length; i++) {
+            ParentInteractable currentItem = abstractStage.items[i];
+            if (currentItem == null) continue;
+
+            if (hitbox.intersects(currentItem.getHitbox())) {
+                return new Pair<>(currentItem.isCollision(), i);
+            }
+        }
+        return new Pair<>(false, -1);
+    }
+
+    public Pair<Boolean, Integer> checkUpItemCollision(Entity entity, boolean player) {
+        int entityX1 = entity.getX() + entity.getHitBox().x;
+        int entityY1 = entity.getY() + entity.getHitBox().y - entity.getSpeed();
+        return this.checkObjectCollision(new Rectangle(entityX1, entityY1, entity.getHitBox().width, entity.getHitBox().height));
+    }
+    public Pair<Boolean, Integer> checkDownItemCollision(Entity entity, boolean player) {
+        int entityX1 = entity.getX() + entity.getHitBox().x;
+        int entityY1 = entity.getY() + entity.getHitBox().y + entity.getSpeed();
+        return this.checkObjectCollision(new Rectangle(entityX1, entityY1, entity.getHitBox().width, entity.getHitBox().height));
+    }
+
+    public Pair<Boolean, Integer> checkRightItemCollision(Entity entity, boolean player) {
+        int entityX1 = entity.getX() + entity.getHitBox().x + entity.getSpeed();
+        int entityY1 = entity.getY() + entity.getHitBox().y;
+        return this.checkObjectCollision(new Rectangle(entityX1, entityY1, entity.getHitBox().width, entity.getHitBox().height));
+    }
+    public Pair<Boolean, Integer> checkLeftItemCollision(Entity entity, boolean player) {
+        int entityX1 = entity.getX() + entity.getHitBox().x - entity.getSpeed();
+        int entityY1 = entity.getY() + entity.getHitBox().y;
+        return this.checkObjectCollision(new Rectangle(entityX1, entityY1, entity.getHitBox().width, entity.getHitBox().height));
+    }
 }

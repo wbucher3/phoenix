@@ -1,6 +1,7 @@
 package interactable;
 
 import entity.Player;
+import util.Constants;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -12,12 +13,14 @@ public class ParentInteractable {
     private boolean collision = false;
     private int x;
     private int y;
-    private final int tileSize = 64;
+    private Rectangle hitbox;
+
 
     public ParentInteractable(String name, int x, int y, boolean collision) {
         this.x = x;
         this.y = y;
         this.collision = collision;
+        this.hitbox = new Rectangle(x, y, Constants.TILE_SIZE, Constants.TILE_SIZE);
     }
 
 
@@ -26,11 +29,11 @@ public class ParentInteractable {
         int screenY = y - player.getY() + player.getScreenCenterY();
 
         // checks if the tile is on the screen before drawing it (1 tile extra to keep it smooth)
-        if (x + tileSize > player.getX() - player.getScreenCenterX()
-                && x - tileSize < player.getX() + player.getScreenCenterX()
-                && y + tileSize > player.getY() - player.getScreenCenterY()
-                && y - tileSize < player.getY() + player.getScreenCenterY()) {
-            graphics2D.drawImage(image, screenX, screenY, tileSize, tileSize, null);
+        if (x + Constants.TILE_SIZE > player.getX() - player.getScreenCenterX()
+                && x - Constants.TILE_SIZE < player.getX() + player.getScreenCenterX()
+                && y + Constants.TILE_SIZE > player.getY() - player.getScreenCenterY()
+                && y - Constants.TILE_SIZE < player.getY() + player.getScreenCenterY()) {
+            graphics2D.drawImage(image, screenX, screenY, Constants.TILE_SIZE, Constants.TILE_SIZE, null);
         }
     }
 
@@ -72,5 +75,13 @@ public class ParentInteractable {
 
     public void setY(int y) {
         this.y = y;
+    }
+
+    public Rectangle getHitbox() {
+        return hitbox;
+    }
+
+    public void setHitbox(Rectangle hitbox) {
+        this.hitbox = hitbox;
     }
 }
