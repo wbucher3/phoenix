@@ -13,8 +13,8 @@ public class StageOne extends AbstractStage {
 
     public StageOne() {
         super(20, 25, getTileInformation(), getFloorItems());
-
-
+        super.soundHandler.setFile(0);
+        super.soundHandler.play();
     }
 
     private static TileInformation getTileInformation() {

@@ -10,4 +10,9 @@ public class Key extends ParentInteractable {
         super.setImage(UtilityFunctions.readImageFile("./assets/items/", "key", ".png"));
     }
 
+    @Override
+    public void handleCollision() {
+
+    }
+
 }

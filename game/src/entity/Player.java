@@ -1,7 +1,9 @@
 package entity;
 
+import game.AbstractStage;
 import game.CollisionHandler;
 import game.KeyPressHandler;
+import interactable.ParentInteractable;
 import util.Constants;
 import util.Pair;
 
@@ -11,14 +13,16 @@ public class Player extends Entity {
 
     KeyPressHandler keyPressHandler;
     CollisionHandler collisionHandler;
+    AbstractStage stage;
 
     private final int screenCenterX;
     private final int screenCenterY;
 
-    public Player(KeyPressHandler keyPressHandler, CollisionHandler collisionHandler, int screenCenterX, int screenCenterY) {
+    public Player(KeyPressHandler keyPressHandler, CollisionHandler collisionHandler, AbstractStage stage, int screenCenterX, int screenCenterY) {
         super(8, 32); // animation speed % total frames === 0 for smooth animations
         this.keyPressHandler = keyPressHandler;
         this.collisionHandler = collisionHandler;
+        this.stage = stage;
 
         super.setX(3 * 64);
         super.setY(3 * 64);
@@ -110,7 +114,8 @@ public class Player extends Entity {
     }
 
     private void handleItemCollision(int index) {
-        System.out.println("Collided: " + index);
+        ParentInteractable item = this.stage.items[index];
+        this.stage.items[index] = null;
     }
 
     // Needed for drawing of tiles

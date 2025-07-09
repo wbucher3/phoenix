@@ -9,4 +9,9 @@ public class Door extends ParentInteractable {
         super.setName("Door");
         super.setImage(UtilityFunctions.readImageFile("./assets/items/", "door", ".png"));
     }
+
+    @Override
+    public void handleCollision() {
+
+    }
 }

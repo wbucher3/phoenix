@@ -9,4 +9,9 @@ public class Chest extends ParentInteractable {
         super.setName("Chest");
         super.setImage(UtilityFunctions.readImageFile("./assets/items/", "chest", ".png"));
     }
+
+    @Override
+    public void handleCollision() {
+
+    }
 }

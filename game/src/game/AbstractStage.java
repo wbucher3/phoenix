@@ -8,6 +8,7 @@ import util.Constants;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.concurrent.TimeUnit;
 
 public abstract class AbstractStage extends JPanel implements Runnable{
 
@@ -22,12 +23,14 @@ public abstract class AbstractStage extends JPanel implements Runnable{
     KeyPressHandler keyPressHandler = new KeyPressHandler();
     CollisionHandler collisionHandler = new CollisionHandler(this);
     MouseHandler mouseHandler = new MouseHandler();
+    public SoundHandler soundHandler = new SoundHandler();
 
     // Player Information //
-    Player player = new Player(keyPressHandler, collisionHandler, Constants.SCREEN_WIDTH / 2, Constants.SCREEN_HEIGHT / 2);
+    Player player = new Player(keyPressHandler, collisionHandler, this,Constants.SCREEN_WIDTH / 2, Constants.SCREEN_HEIGHT / 2);
 
     // Items //
-    ParentInteractable[] items;
+    public ParentInteractable[] items;
+
 
 
     /**
@@ -96,6 +99,12 @@ public abstract class AbstractStage extends JPanel implements Runnable{
      * Draws actions of the frame
      * */
     public void paintComponent(Graphics graphics) {
+
+        long drawingStartTime = 0;
+        if (keyPressHandler.debug) {
+            drawingStartTime = System.nanoTime();
+        }
+
         super.paintComponent(graphics);
         Graphics2D graphics2d = (Graphics2D) graphics; // This draws the black background and ensure screen wipe
 
@@ -109,6 +118,13 @@ public abstract class AbstractStage extends JPanel implements Runnable{
 
         // Draw Player //
         this.player.drawPlayer(graphics2d);
+
+        if (keyPressHandler.debug) {
+            long drawingEndTime = System.nanoTime();
+            long timePassed = drawingEndTime - drawingStartTime;
+            graphics2d.setColor(Color.white);
+            graphics2d.drawString("Draw Time: " + TimeUnit.NANOSECONDS.toMillis(timePassed) + " ms" , 10, 400);
+        }
 
         // Close the graphics object //
         graphics2d.dispose();

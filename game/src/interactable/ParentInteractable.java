@@ -6,7 +6,7 @@ import util.Constants;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 
-public class ParentInteractable {
+public abstract class ParentInteractable {
 
     private BufferedImage image;
     private String name;
@@ -22,6 +22,8 @@ public class ParentInteractable {
         this.collision = collision;
         this.hitbox = new Rectangle(x, y, Constants.TILE_SIZE, Constants.TILE_SIZE);
     }
+
+    public abstract void handleCollision();
 
 
     public void draw(Graphics2D graphics2D, Player player) {
