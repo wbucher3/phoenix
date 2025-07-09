@@ -24,13 +24,13 @@ public class Player extends Entity {
         this.collisionHandler = collisionHandler;
         this.stage = stage;
 
-        super.setX(3 * 64);
-        super.setY(3 * 64);
-        super.setWidth(64);
-        super.setHeight(64);
+        super.setX(3 * Constants.TILE_SIZE);
+        super.setY(3 * Constants.TILE_SIZE);
+        super.setWidth(Constants.TILE_SIZE);
+        super.setHeight(Constants.TILE_SIZE);
         super.setSpeed(8);
-        this.screenCenterX = screenCenterX - (super.getWidth() / 2);
-        this.screenCenterY = screenCenterY - (super.getHeight() / 2);
+        this.screenCenterX = screenCenterX - (Constants.TILE_SIZE / 2);
+        this.screenCenterY = screenCenterY - (Constants.TILE_SIZE / 2);
 
         super.readSpriteImages("./assets/cat/", ".png");
         super.setHitBox(new Rectangle(20, 30, 20, 20));
@@ -72,10 +72,12 @@ public class Player extends Entity {
         }
 
 
+        int changeX = 0;
+        int changeY = 0;
         if (keyPressHandler.rightPressed) {
             Pair<Boolean, Integer> itemCollision = this.collisionHandler.checkRightItemCollision(this, true);
             if (!this.collisionHandler.checkRightWallCollision(this) && !itemCollision.getKey()) {
-                super.setX(super.getX() + super.getSpeed());
+                changeX = changeX + super.getSpeed();
             }
             if (itemCollision.getValue() != -1) {
                 this.handleItemCollision(itemCollision.getValue());
@@ -84,7 +86,7 @@ public class Player extends Entity {
         if (keyPressHandler.leftPressed) {
             Pair<Boolean, Integer> itemCollision = this.collisionHandler.checkLeftItemCollision(this, true);
             if (!this.collisionHandler.checkLeftWallCollision(this) && !itemCollision.getKey()) {
-                super.setX(super.getX() - super.getSpeed());
+                changeX = changeX - super.getSpeed();
             }
             if (itemCollision.getValue() != -1) {
                 this.handleItemCollision(itemCollision.getValue());
@@ -94,7 +96,7 @@ public class Player extends Entity {
         if (keyPressHandler.upPressed) {
             Pair<Boolean, Integer> itemCollision = this.collisionHandler.checkUpItemCollision(this, true);
             if (!this.collisionHandler.checkUpCollision(this) && !itemCollision.getKey()) {
-                super.setY(super.getY() - super.getSpeed());
+                changeY = changeY - super.getSpeed();
             }
             if (itemCollision.getValue() != -1) {
                 this.handleItemCollision(itemCollision.getValue());
@@ -104,11 +106,19 @@ public class Player extends Entity {
         if (keyPressHandler.downPressed) {
             Pair<Boolean, Integer> itemCollision = this.collisionHandler.checkDownItemCollision(this, true);
             if (!this.collisionHandler.checkDownCollision(this) && !itemCollision.getKey()) {
-                super.setY(super.getY() + super.getSpeed());
+                changeY = changeY + super.getSpeed();
             }
             if (itemCollision.getValue() != -1) {
                 this.handleItemCollision(itemCollision.getValue());
             }
+        }
+
+        if (changeX != 0 && changeY == 0) super.setX(super.getX() + changeX);
+        if (changeX == 0 && changeY != 0) super.setY(super.getY() + changeY);
+
+        if (changeX != 0 && changeY != 0) {
+            super.setX(super.getX() + (int) Math.ceil(changeX / 1.414));
+            super.setY(super.getY() + (int) Math.ceil(changeY / 1.414));
         }
 
     }
