@@ -14,4 +14,9 @@ public class Door extends ParentInteractable {
     public void handleCollision() {
 
     }
+
+    @Override
+    public void handleInteraction() {
+
+    }
 }

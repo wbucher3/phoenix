@@ -25,8 +25,10 @@ public abstract class ParentInteractable {
 
     public abstract void handleCollision();
 
+    public abstract void handleInteraction();
 
-    public void draw(Graphics2D graphics2D, Player player) {
+
+    public void draw(Graphics2D graphics2D, Player player, boolean playerOverlap) {
         int screenX = x - player.getX() + player.getScreenCenterX();
         int screenY = y - player.getY() + player.getScreenCenterY();
 
@@ -37,7 +39,13 @@ public abstract class ParentInteractable {
                 && y - Constants.TILE_SIZE < player.getY() + player.getScreenCenterY()) {
             graphics2D.drawImage(image, screenX, screenY, Constants.TILE_SIZE, Constants.TILE_SIZE, null);
         }
+
+        if (playerOverlap) {
+            graphics2D.drawString("Press 'E' to Pick Up" , screenX - 10, screenY - 10);
+        }
     }
+
+
 
     public BufferedImage getImage() {
         return image;

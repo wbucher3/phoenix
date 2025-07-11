@@ -1,5 +1,6 @@
-package interactable;
+package interactable.items;
 
+import interactable.ParentInteractable;
 import util.UtilityFunctions;
 
 public class Key extends ParentInteractable {
@@ -12,6 +13,11 @@ public class Key extends ParentInteractable {
 
     @Override
     public void handleCollision() {
+
+    }
+
+    @Override
+    public void handleInteraction() {
 
     }
 

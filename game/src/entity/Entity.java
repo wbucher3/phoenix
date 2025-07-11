@@ -20,10 +20,7 @@ public abstract class Entity {
     private Direction direction;
     private State currentState;
     private State previousState;
-
-
-
-
+    
     // collision
     private Rectangle hitBox;
 

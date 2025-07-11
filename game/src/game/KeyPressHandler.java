@@ -8,7 +8,8 @@ import java.awt.event.KeyEvent;
 public class KeyPressHandler extends KeyAdapter {
 
     public boolean upPressed, downPressed, leftPressed, rightPressed = false;
-    public boolean debug;
+    public boolean debug = false;
+    public boolean interactPressed = false;
 
     public boolean isMovementKeyPressed() {
         return this.rightPressed || this.leftPressed || this.upPressed || this.downPressed;
@@ -29,6 +30,9 @@ public class KeyPressHandler extends KeyAdapter {
         }
         if (ControlBindings.DOWN == code) {
             this.downPressed = true;
+        }
+        if (ControlBindings.INTERACT == code) {
+            this.interactPressed = true;
         }
 
         if (KeyEvent.VK_T == code) debug = !debug;
@@ -57,6 +61,9 @@ public class KeyPressHandler extends KeyAdapter {
         }
         if (ControlBindings.DOWN == code) {
             this.downPressed = false;
+        }
+        if (ControlBindings.INTERACT == code) {
+            this.interactPressed = false;
         }
 
     }

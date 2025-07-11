@@ -8,15 +8,18 @@ import util.Constants;
 import util.Pair;
 
 import java.awt.*;
+import java.util.Arrays;
 
 public class Player extends Entity {
 
     KeyPressHandler keyPressHandler;
-    CollisionHandler collisionHandler;
+    public CollisionHandler collisionHandler;
     AbstractStage stage;
 
     private final int screenCenterX;
     private final int screenCenterY;
+
+
 
     public Player(KeyPressHandler keyPressHandler, CollisionHandler collisionHandler, AbstractStage stage, int screenCenterX, int screenCenterY) {
         super(8, 32); // animation speed % total frames === 0 for smooth animations
@@ -51,6 +54,14 @@ public class Player extends Entity {
         }
         super.setPreviousState(super.getCurrentState());
 
+        // Item interaction
+
+        for (int i = 0; i < stage.items.length; i++) {
+            if (this.collisionHandler.isPlayerOnTop(this, stage.items[i])) {
+                this.handleItemCollision(i);
+            }
+        }
+
         // MOVEMENT
         if (keyPressHandler.isMovementKeyPressed()) {
             if (keyPressHandler.rightPressed) {
@@ -75,48 +86,34 @@ public class Player extends Entity {
         int changeX = 0;
         int changeY = 0;
         if (keyPressHandler.rightPressed) {
-            Pair<Boolean, Integer> itemCollision = this.collisionHandler.checkRightItemCollision(this, true);
-            if (!this.collisionHandler.checkRightWallCollision(this) && !itemCollision.getKey()) {
+            if (!this.collisionHandler.checkRightWallCollision(this) && !this.collisionHandler.checkRightItemCollision(this, true)) {
                 changeX = changeX + super.getSpeed();
-            }
-            if (itemCollision.getValue() != -1) {
-                this.handleItemCollision(itemCollision.getValue());
             }
         }
         if (keyPressHandler.leftPressed) {
-            Pair<Boolean, Integer> itemCollision = this.collisionHandler.checkLeftItemCollision(this, true);
-            if (!this.collisionHandler.checkLeftWallCollision(this) && !itemCollision.getKey()) {
+            if (!this.collisionHandler.checkLeftWallCollision(this) && !this.collisionHandler.checkLeftItemCollision(this, true)) {
                 changeX = changeX - super.getSpeed();
-            }
-            if (itemCollision.getValue() != -1) {
-                this.handleItemCollision(itemCollision.getValue());
             }
         }
 
         if (keyPressHandler.upPressed) {
-            Pair<Boolean, Integer> itemCollision = this.collisionHandler.checkUpItemCollision(this, true);
-            if (!this.collisionHandler.checkUpCollision(this) && !itemCollision.getKey()) {
+            if (!this.collisionHandler.checkUpCollision(this) && !this.collisionHandler.checkUpItemCollision(this, true)) {
                 changeY = changeY - super.getSpeed();
-            }
-            if (itemCollision.getValue() != -1) {
-                this.handleItemCollision(itemCollision.getValue());
             }
         }
 
         if (keyPressHandler.downPressed) {
-            Pair<Boolean, Integer> itemCollision = this.collisionHandler.checkDownItemCollision(this, true);
-            if (!this.collisionHandler.checkDownCollision(this) && !itemCollision.getKey()) {
+            if (!this.collisionHandler.checkDownCollision(this) && !this.collisionHandler.checkDownItemCollision(this, true)) {
                 changeY = changeY + super.getSpeed();
-            }
-            if (itemCollision.getValue() != -1) {
-                this.handleItemCollision(itemCollision.getValue());
             }
         }
 
+        // Normalize Movement
         if (changeX != 0 && changeY == 0) super.setX(super.getX() + changeX);
         if (changeX == 0 && changeY != 0) super.setY(super.getY() + changeY);
-
         if (changeX != 0 && changeY != 0) {
+            // divide by 1.414 because it's a 45-45-90 triangle
+            // angled movement is still a little faster since we round up for integers
             super.setX(super.getX() + (int) Math.ceil(changeX / 1.414));
             super.setY(super.getY() + (int) Math.ceil(changeY / 1.414));
         }
@@ -124,8 +121,12 @@ public class Player extends Entity {
     }
 
     private void handleItemCollision(int index) {
-        ParentInteractable item = this.stage.items[index];
-        this.stage.items[index] = null;
+        this.stage.playerItemOverlapList[index] = true;
+        if (keyPressHandler.interactPressed) {
+            ParentInteractable item = this.stage.items[index];
+            this.stage.items[index] = null;
+        }
+
     }
 
     // Needed for drawing of tiles

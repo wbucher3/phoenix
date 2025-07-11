@@ -8,6 +8,7 @@ public class ControlBindings {
     public static int RIGHT = KeyEvent.VK_D;
     public static int UP = KeyEvent.VK_W;
     public static int DOWN = KeyEvent.VK_S;
+    public static int INTERACT = KeyEvent.VK_E;
 
 
 }

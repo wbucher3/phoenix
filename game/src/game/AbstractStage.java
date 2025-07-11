@@ -8,11 +8,13 @@ import util.Constants;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.Arrays;
 import java.util.concurrent.TimeUnit;
 
 public abstract class AbstractStage extends JPanel implements Runnable{
 
     // Game tools //
+    int currentFPS = -1;
     Thread gameThread; // separates off the main thread which is running the window
 
     // Map //
@@ -30,6 +32,8 @@ public abstract class AbstractStage extends JPanel implements Runnable{
 
     // Items //
     public ParentInteractable[] items;
+    public boolean[] playerItemOverlapList;
+
 
 
 
@@ -48,6 +52,8 @@ public abstract class AbstractStage extends JPanel implements Runnable{
         this.tileInformation = tileInformation;
         this.tileHandler = new TileHandler(maxMapRows, maxMapColumns, Constants.TILE_SIZE, 2, tileInformation);
         this.items = items;
+        this.playerItemOverlapList = new boolean[items.length];
+        Arrays.fill(this.playerItemOverlapList, false);
     }
 
 
@@ -73,15 +79,31 @@ public abstract class AbstractStage extends JPanel implements Runnable{
         long lastTime = System.nanoTime();
         long currentTime;
 
+        // Used for FPS Calculation
+        long timer = 0;
+        int drawCount = 0;
+        //
+
         while (gameThread != null) {
             currentTime = System.nanoTime();
             delta += (currentTime - lastTime) / drawInterval;
+            timer += currentTime - lastTime; // FPS calc
             lastTime = currentTime;
 
             if (delta >= 1) {
                 update();
                 repaint();
                 delta--;
+
+                drawCount++; // FPS Calc
+            }
+
+            // FPS Calc
+            if (timer >= 1000000000) {
+                this.currentFPS = drawCount;
+//                System.out.println("FPS: " + drawCount);
+                drawCount = 0;
+                timer = 0;
             }
         }
     }
@@ -105,15 +127,19 @@ public abstract class AbstractStage extends JPanel implements Runnable{
             drawingStartTime = System.nanoTime();
         }
 
-        super.paintComponent(graphics);
-        Graphics2D graphics2d = (Graphics2D) graphics; // This draws the black background and ensure screen wipe
+        super.paintComponent(graphics); // Calls JPanel to draw black for screen wipe
+        Graphics2D graphics2d = (Graphics2D) graphics;
+
+        // Configure Font //
+        graphics2d.setColor(Color.white);
+        graphics2d.setFont(new Font("Monospaced", Font.PLAIN, 14));
 
         // Draw Map //
         this.tileHandler.drawAllTiles(graphics2d, player);
 
         // Draw Items //
         for (ParentInteractable item : items) {
-            if (item != null) item.draw(graphics2d, player);
+            if (item != null) item.draw(graphics2d, player, this.collisionHandler.isPlayerOnTop(player, item));
         }
 
         // Draw Player //
@@ -123,7 +149,9 @@ public abstract class AbstractStage extends JPanel implements Runnable{
             long drawingEndTime = System.nanoTime();
             long timePassed = drawingEndTime - drawingStartTime;
             graphics2d.setColor(Color.white);
+            graphics2d.drawString("FPS: " + this.currentFPS , 10, 380);
             graphics2d.drawString("Draw Time: " + TimeUnit.NANOSECONDS.toMillis(timePassed) + " ms" , 10, 400);
+
         }
 
         // Close the graphics object //

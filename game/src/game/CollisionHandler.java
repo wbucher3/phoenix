@@ -1,6 +1,7 @@
 package game;
 
 import entity.Entity;
+import entity.Player;
 import interactable.ParentInteractable;
 import util.Constants;
 import util.Pair;
@@ -85,7 +86,7 @@ public class CollisionHandler {
     }
 
 
-    public Pair<Boolean, Integer> checkObjectCollision(Rectangle hitbox) {
+    public boolean checkItemCollision(Rectangle hitbox) {
         int index = -1;
         boolean collision = false;
 
@@ -93,32 +94,42 @@ public class CollisionHandler {
             ParentInteractable currentItem = abstractStage.items[i];
             if (currentItem == null) continue;
 
-            if (hitbox.intersects(currentItem.getHitbox())) {
-                return new Pair<>(currentItem.isCollision(), i);
+            if (hitbox.intersects(currentItem.getHitbox()) && currentItem.isCollision()) {
+                return true;
             }
         }
-        return new Pair<>(false, -1);
+        return false;
     }
 
-    public Pair<Boolean, Integer> checkUpItemCollision(Entity entity, boolean player) {
+    public boolean checkUpItemCollision(Entity entity, boolean player) {
         int entityX1 = entity.getX() + entity.getHitBox().x;
         int entityY1 = entity.getY() + entity.getHitBox().y - entity.getSpeed();
-        return this.checkObjectCollision(new Rectangle(entityX1, entityY1, entity.getHitBox().width, entity.getHitBox().height));
+        return this.checkItemCollision(new Rectangle(entityX1, entityY1, entity.getHitBox().width, entity.getHitBox().height));
     }
-    public Pair<Boolean, Integer> checkDownItemCollision(Entity entity, boolean player) {
+    public boolean checkDownItemCollision(Entity entity, boolean player) {
         int entityX1 = entity.getX() + entity.getHitBox().x;
         int entityY1 = entity.getY() + entity.getHitBox().y + entity.getSpeed();
-        return this.checkObjectCollision(new Rectangle(entityX1, entityY1, entity.getHitBox().width, entity.getHitBox().height));
+        return this.checkItemCollision(new Rectangle(entityX1, entityY1, entity.getHitBox().width, entity.getHitBox().height));
     }
 
-    public Pair<Boolean, Integer> checkRightItemCollision(Entity entity, boolean player) {
+    public boolean checkRightItemCollision(Entity entity, boolean player) {
         int entityX1 = entity.getX() + entity.getHitBox().x + entity.getSpeed();
         int entityY1 = entity.getY() + entity.getHitBox().y;
-        return this.checkObjectCollision(new Rectangle(entityX1, entityY1, entity.getHitBox().width, entity.getHitBox().height));
+        return this.checkItemCollision(new Rectangle(entityX1, entityY1, entity.getHitBox().width, entity.getHitBox().height));
     }
-    public Pair<Boolean, Integer> checkLeftItemCollision(Entity entity, boolean player) {
+    public boolean checkLeftItemCollision(Entity entity, boolean player) {
         int entityX1 = entity.getX() + entity.getHitBox().x - entity.getSpeed();
         int entityY1 = entity.getY() + entity.getHitBox().y;
-        return this.checkObjectCollision(new Rectangle(entityX1, entityY1, entity.getHitBox().width, entity.getHitBox().height));
+        return this.checkItemCollision(new Rectangle(entityX1, entityY1, entity.getHitBox().width, entity.getHitBox().height));
+    }
+
+    // used for interaction, not for collider logic. That is what above it for
+    public boolean isPlayerOnTop(Player player, ParentInteractable item) {
+        int playerX = player.getX() + player.getHitBox().x;
+        int playerY = player.getY() + player.getHitBox().y;
+        Rectangle playerHitBox = new Rectangle(playerX, playerY, player.getHitBox().width , player.getHitBox().height);
+        if (item == null) return false;
+
+        return playerHitBox.intersects(item.getHitbox());
     }
 }

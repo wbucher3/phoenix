@@ -1,12 +1,8 @@
 package stages;
 
 import game.AbstractStage;
-import interactable.Chest;
-import interactable.Door;
-import interactable.Key;
 import interactable.ParentInteractable;
 import tile.TileInformation;
-import util.Constants;
 
 public class StageZero extends AbstractStage {
 
