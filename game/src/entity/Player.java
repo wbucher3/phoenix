@@ -121,9 +121,8 @@ public class Player extends Entity {
     }
 
     private void handleItemCollision(int index) {
-        this.stage.playerItemOverlapList[index] = true;
         if (keyPressHandler.interactPressed) {
-            ParentInteractable item = this.stage.items[index];
+            this.stage.items[index].handleInteraction();
             this.stage.items[index] = null;
         }
 

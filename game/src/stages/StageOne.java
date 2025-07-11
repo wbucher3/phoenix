@@ -1,6 +1,7 @@
 package stages;
 
 import game.AbstractStage;
+import interactable.Ladder;
 import interactable.items.Chest;
 import interactable.Door;
 import interactable.items.Key;
@@ -12,7 +13,8 @@ public class StageOne extends AbstractStage {
 
 
     public StageOne() {
-        super(20, 25, getTileInformation(), getFloorItems());
+        super(20, 25, getTileInformation());
+        super.setItems(this.getFloorItems());
         super.soundHandler.setFile(0);
         super.soundHandler.play();
     }
@@ -22,13 +24,11 @@ public class StageOne extends AbstractStage {
 
     }
 
-    private static ParentInteractable[] getFloorItems() {
+    private ParentInteractable[] getFloorItems() {
         ParentInteractable[] items = new ParentInteractable[10];
         items[0] = new Key("Key 1",  Constants.TILE_SIZE * 6, Constants.TILE_SIZE * 4, false);
-        items[1] = new Door("Door 1 Left",  Constants.TILE_SIZE * 6, Constants.TILE_SIZE * 6, false);
-        items[2] = new Door("Door 1 Right",  Constants.TILE_SIZE * 7, Constants.TILE_SIZE * 6, false);
-        items[3] = new Chest("Chest 1",  Constants.TILE_SIZE * 14, Constants.TILE_SIZE * 9, false);
-        items[4] = new Key("Key 2",  Constants.TILE_SIZE * 14, Constants.TILE_SIZE * 12, false);
+        items[1] = new Ladder("Ladder",  Constants.TILE_SIZE * 9, Constants.TILE_SIZE * 8, false, this);
+        items[2] = new Chest("Chest 1",  Constants.TILE_SIZE * 14, Constants.TILE_SIZE * 9, true);
         return items;
     }
 }

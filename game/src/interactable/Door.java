@@ -19,4 +19,9 @@ public class Door extends ParentInteractable {
     public void handleInteraction() {
 
     }
+
+    @Override
+    public String getInteractMessage() {
+        return "Open Door";
+    }
 }

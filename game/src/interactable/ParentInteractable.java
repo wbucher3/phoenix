@@ -27,6 +27,8 @@ public abstract class ParentInteractable {
 
     public abstract void handleInteraction();
 
+    public abstract String getInteractMessage();
+
 
     public void draw(Graphics2D graphics2D, Player player, boolean playerOverlap) {
         int screenX = x - player.getX() + player.getScreenCenterX();
@@ -41,7 +43,7 @@ public abstract class ParentInteractable {
         }
 
         if (playerOverlap) {
-            graphics2D.drawString("Press 'E' to Pick Up" , screenX - 10, screenY - 10);
+            graphics2D.drawString(this.getInteractMessage() , screenX - 10, screenY - 10);
         }
     }
 

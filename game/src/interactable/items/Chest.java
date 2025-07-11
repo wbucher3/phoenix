@@ -20,4 +20,9 @@ public class Chest extends ParentInteractable {
     public void handleInteraction() {
 
     }
+
+    @Override
+    public String getInteractMessage() {
+        return "Chest Ahead";
+    }
 }

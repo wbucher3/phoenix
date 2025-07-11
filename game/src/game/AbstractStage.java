@@ -32,7 +32,7 @@ public abstract class AbstractStage extends JPanel implements Runnable{
 
     // Items //
     public ParentInteractable[] items;
-    public boolean[] playerItemOverlapList;
+    public void setItems(ParentInteractable[] items) { this.items = items;}
 
 
 
@@ -40,7 +40,7 @@ public abstract class AbstractStage extends JPanel implements Runnable{
     /**
      * Constructor (duh) creates the stage...
      * */
-    public AbstractStage(int maxMapRows, int maxMapColumns, TileInformation tileInformation, ParentInteractable[] items) {
+    public AbstractStage(int maxMapRows, int maxMapColumns, TileInformation tileInformation) {
         // JPanel Set Up
         super.setBackground(Color.BLACK);
         super.setDoubleBuffered(true);
@@ -51,9 +51,12 @@ public abstract class AbstractStage extends JPanel implements Runnable{
         // Stage Set Up
         this.tileInformation = tileInformation;
         this.tileHandler = new TileHandler(maxMapRows, maxMapColumns, Constants.TILE_SIZE, 2, tileInformation);
-        this.items = items;
-        this.playerItemOverlapList = new boolean[items.length];
-        Arrays.fill(this.playerItemOverlapList, false);
+
+    }
+
+
+    public void nextStage() {
+        System.out.println("Going to next stage...");
     }
 
 

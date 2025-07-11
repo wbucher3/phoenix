@@ -21,4 +21,9 @@ public class Key extends ParentInteractable {
 
     }
 
+    @Override
+    public String getInteractMessage() {
+        return "Press 'E' to Pick Up";
+    }
+
 }

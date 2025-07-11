@@ -8,7 +8,7 @@ public class StageZero extends AbstractStage {
 
 
     public StageZero() {
-        super(20, 25, getTileInformation(), getFloorItems());
+        super(20, 25, getTileInformation());
     }
 
     private static TileInformation getTileInformation() {
