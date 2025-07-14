@@ -43,7 +43,6 @@ public class TileHandler {
         for (int i = 0 ; i < this.tileInformation.getNames().length ; i++) {
             this.getTiles()[i] = new Tile(tileInformation.getImageDirectory(), tileInformation.getNames()[i], ".png", tileInformation.getCollidable()[i]);
         }
-
     }
 
     private void loadMap() {
@@ -101,31 +100,9 @@ public class TileHandler {
         return numberOfTileTypes;
     }
 
-    public void setNumberOfTileTypes(int numberOfTileTypes) {
-        this.numberOfTileTypes = numberOfTileTypes;
-    }
 
     public int[][] getTileMap() {
         return tileMap;
     }
 
-    public void setTileMap(int[][] tileMap) {
-        this.tileMap = tileMap;
-    }
-
-    public int getColumns() {
-        return columns;
-    }
-
-    public void setColumns(int columns) {
-        this.columns = columns;
-    }
-
-    public int getRows() {
-        return rows;
-    }
-
-    public void setRows(int rows) {
-        this.rows = rows;
-    }
 }

@@ -23,7 +23,7 @@ public class StageOne extends AbstractStage {
     private static TileInformation fetchTileInformation() {
         return new TileInformation("./assets/maps/testmap2.csv",
                                     "./assets/tiles/",
-                                                new String[]{"grass-block", "stone-block"},
+                                                new String[]{"stone-block", "stone-custom"},
                                                 new boolean[]{false, true});
     }
 

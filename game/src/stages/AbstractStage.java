@@ -44,28 +44,14 @@ public abstract class AbstractStage {
         return maxMapColumns;
     }
 
-    public void setMaxMapColumns(int maxMapColumns) {
-        this.maxMapColumns = maxMapColumns;
-    }
 
     public TileInformation getTileInformation() {
         return tileInformation;
     }
 
-    public void setTileInformation(TileInformation tileInformation) {
-        this.tileInformation = tileInformation;
-    }
-
-    public void setFloorItems(ParentInteractable[] floorItems) {
-        this.floorItems = floorItems;
-    }
 
     public TileHandler getTileHandler() {
         return tileHandler;
-    }
-
-    public void setTileHandler(TileHandler tileHandler) {
-        this.tileHandler = tileHandler;
     }
 
     public int getPlayerSpawnX() {

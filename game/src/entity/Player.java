@@ -10,10 +10,10 @@ import java.awt.*;
 
 public class Player extends Entity {
 
-    KeyPressHandler keyPressHandler;
-    MouseHandler mouseHandler;
-    CollisionHandler collisionHandler;
-    GameStateManager gameStateManager;
+    private final KeyPressHandler keyPressHandler;
+    private final MouseHandler mouseHandler;
+    private final CollisionHandler collisionHandler;
+    private final GameStateManager gameStateManager;
 
     private final int screenCenterX;
     private final int screenCenterY;
@@ -39,7 +39,6 @@ public class Player extends Entity {
     }
 
     public void drawPlayer(Graphics2D graphics2D) {
-        // player is always in the center of the screen
         super.draw(graphics2D, this.screenCenterX, this.screenCenterY);
     }
 
@@ -54,13 +53,20 @@ public class Player extends Entity {
 
 //        System.out.println(this.mouseHandler.getMouseX() + ", " + this.mouseHandler.getMouseY());
 
+        // Get mouse position for sprite direction
+        // up X:948 Y: 329
+        // down X:932 Y: 844
+        // right X:932 Y: 844
+        // left X:350 Y: 530
+
+
+
         // Item interaction
         for (int i = 0; i < gameStateManager.items.length; i++) {
             if (this.collisionHandler.isPlayerOnTop(this, gameStateManager.items[i])) {
                 this.handleItemCollision(i);
             }
         }
-
 
 
         // MOVEMENT

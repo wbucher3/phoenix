@@ -106,7 +106,6 @@ public abstract class Entity {
         return totalFrames;
     }
 
-
     public int getFrameCounter() {
         return frameCounter;
     }
@@ -126,9 +125,6 @@ public abstract class Entity {
     public BufferedImage[] getIdleSprites() {
         return idleSprites;
     }
-
-
-
 
     public int getX() {
         return x;
@@ -181,7 +177,6 @@ public abstract class Entity {
     public void setHitBox(Rectangle hitBox) {
         this.hitBox = hitBox;
     }
-
 
     public State getCurrentState() {
         return currentState;
