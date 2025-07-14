@@ -8,12 +8,9 @@ import java.io.File;
 
 public class SoundHandler {
     private Clip clip;
-    File[] soundUrl = new File[10];
     private boolean isPlaying = false;
 
-    public SoundHandler() {
-        soundUrl[0] = new File("./assets/music/test-song.wav");
-    }
+    public SoundHandler() {}
 
     public void stopSetPlayAndLoop(File musicFile) {
         if (this.isPlaying) {

@@ -18,25 +18,24 @@ import java.util.concurrent.TimeUnit;
 public class GameStateManager extends JPanel implements Runnable{
 
     /** Game tools **/
-    int currentFPS = -1;
-    GameState state = GameState.GAMEPLAY;
-    Thread gameThread; // separates off the main thread which is running the window
+    private int currentFPS = -1;
+    private GameState state = GameState.GAMEPLAY;
+    private Thread gameThread; // separates off the main thread which is running the window
 
     /** Map **/
-    TileInformation tileInformation;
-    TileHandler tileHandler;
-    HashMap<StageType, AbstractStage> stageHashMap = new HashMap<>();
-    StageType currentStage = StageType.CITY;
-    StageType nextStage = StageType.WOODS;
+    protected TileHandler tileHandler;
+    private final HashMap<StageType, AbstractStage> stageHashMap = new HashMap<>();
+    private StageType currentStage = StageType.CITY;
+    private StageType nextStage = StageType.WOODS;
 
     /** Handlers **/
-    KeyPressHandler keyPressHandler = new KeyPressHandler();
-    CollisionHandler collisionHandler = new CollisionHandler(this);
-    MouseHandler mouseHandler = new MouseHandler();
-    public SoundHandler soundHandler = new SoundHandler();
+    private final KeyPressHandler keyPressHandler = new KeyPressHandler();
+    private final CollisionHandler collisionHandler = new CollisionHandler(this);
+    private final MouseHandler mouseHandler = new MouseHandler();
+    private final SoundHandler soundHandler = new SoundHandler();
 
     /** Player Information **/
-    Player player = new Player(keyPressHandler, collisionHandler, mouseHandler,this,Constants.SCREEN_WIDTH / 2, Constants.SCREEN_HEIGHT / 2);
+    private final Player player = new Player(keyPressHandler, collisionHandler, mouseHandler,this,Constants.SCREEN_WIDTH / 2, Constants.SCREEN_HEIGHT / 2);
 
     /** Items **/
     public ParentInteractable[] items;
@@ -189,7 +188,7 @@ public class GameStateManager extends JPanel implements Runnable{
      * Moves player to starting position of stage
      * */
     public void loadStage(StageType stageType) {
-        this.tileInformation = this.stageHashMap.get(stageType).getTileInformation();
+        this.currentStage = stageType;
         this.tileHandler = this.stageHashMap.get(stageType).getTileHandler();
         this.setItems(this.stageHashMap.get(stageType).getFloorItems());
         this.soundHandler.stopSetPlayAndLoop(this.stageHashMap.get(stageType).getStageMusic());
