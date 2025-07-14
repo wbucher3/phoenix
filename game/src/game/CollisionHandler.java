@@ -4,16 +4,15 @@ import entity.Entity;
 import entity.Player;
 import interactable.ParentInteractable;
 import util.Constants;
-import util.Pair;
 
 import java.awt.*;
 
 public class CollisionHandler {
 
-    private final AbstractStage abstractStage;
+    private final GameStateManager gameStateManager;
 
-    public CollisionHandler(AbstractStage abstractStage) {
-        this.abstractStage = abstractStage;
+    public CollisionHandler(GameStateManager gameStateManager) {
+        this.gameStateManager = gameStateManager;
     }
 
     public boolean checkDownCollision(Entity entity) {
@@ -30,11 +29,11 @@ public class CollisionHandler {
         int entityBottomRow = ((entityY2 + entity.getSpeed()) / Constants.TILE_SIZE);
 
         // get the type of tile
-        int leftDownTile = abstractStage.tileHandler.getTileMap()[entityBottomRow][entityLeftColumn];
-        int rightDownTile = abstractStage.tileHandler.getTileMap()[entityBottomRow][entityRightColumn];
+        int leftDownTile = gameStateManager.tileHandler.getTileMap()[entityBottomRow][entityLeftColumn];
+        int rightDownTile = gameStateManager.tileHandler.getTileMap()[entityBottomRow][entityRightColumn];
 
         // check if the tile type is collidable
-        return abstractStage.tileHandler.getTiles()[leftDownTile].isCollidable() || abstractStage.tileHandler.getTiles()[rightDownTile].isCollidable();
+        return gameStateManager.tileHandler.getTiles()[leftDownTile].isCollidable() || gameStateManager.tileHandler.getTiles()[rightDownTile].isCollidable();
     }
 
     public boolean checkUpCollision(Entity entity) {
@@ -48,10 +47,10 @@ public class CollisionHandler {
         int entityRightColumn = entityX2 / Constants.TILE_SIZE;
         int entityTopRow = (entityY1 - entity.getSpeed()) / Constants.TILE_SIZE;
 
-        int leftUpTile = abstractStage.tileHandler.getTileMap()[entityTopRow][entityLeftColumn];
-        int rightUpTile = abstractStage.tileHandler.getTileMap()[entityTopRow][entityRightColumn];
+        int leftUpTile = gameStateManager.tileHandler.getTileMap()[entityTopRow][entityLeftColumn];
+        int rightUpTile = gameStateManager.tileHandler.getTileMap()[entityTopRow][entityRightColumn];
 
-        return abstractStage.tileHandler.getTiles()[leftUpTile].isCollidable() || abstractStage.tileHandler.getTiles()[rightUpTile].isCollidable();
+        return gameStateManager.tileHandler.getTiles()[leftUpTile].isCollidable() || gameStateManager.tileHandler.getTiles()[rightUpTile].isCollidable();
     }
 
     public boolean checkRightWallCollision(Entity entity) {
@@ -64,10 +63,10 @@ public class CollisionHandler {
         int entityTopRow = entityY1 / Constants.TILE_SIZE;
         int entityBottomRow = entityY2 / Constants.TILE_SIZE;
 
-        int topWallTile = abstractStage.tileHandler.getTileMap()[entityTopRow][entityRightColumn];
-        int bottomWallTile = abstractStage.tileHandler.getTileMap()[entityBottomRow][entityRightColumn];
+        int topWallTile = gameStateManager.tileHandler.getTileMap()[entityTopRow][entityRightColumn];
+        int bottomWallTile = gameStateManager.tileHandler.getTileMap()[entityBottomRow][entityRightColumn];
 
-        return abstractStage.tileHandler.getTiles()[topWallTile].isCollidable() || abstractStage.tileHandler.getTiles()[bottomWallTile].isCollidable();
+        return gameStateManager.tileHandler.getTiles()[topWallTile].isCollidable() || gameStateManager.tileHandler.getTiles()[bottomWallTile].isCollidable();
     }
     public boolean checkLeftWallCollision(Entity entity) {
         int entityX1 = entity.getX() + entity.getHitBox().x;
@@ -79,10 +78,10 @@ public class CollisionHandler {
         int entityTopRow = entityY1 / Constants.TILE_SIZE;
         int entityBottomRow = entityY2 / Constants.TILE_SIZE;
 
-        int topWallTile = abstractStage.tileHandler.getTileMap()[entityTopRow][entityLeftColumn];
-        int bottomWallTile = abstractStage.tileHandler.getTileMap()[entityBottomRow][entityLeftColumn];
+        int topWallTile = gameStateManager.tileHandler.getTileMap()[entityTopRow][entityLeftColumn];
+        int bottomWallTile = gameStateManager.tileHandler.getTileMap()[entityBottomRow][entityLeftColumn];
 
-        return abstractStage.tileHandler.getTiles()[topWallTile].isCollidable() || abstractStage.tileHandler.getTiles()[bottomWallTile].isCollidable();
+        return gameStateManager.tileHandler.getTiles()[topWallTile].isCollidable() || gameStateManager.tileHandler.getTiles()[bottomWallTile].isCollidable();
     }
 
 
@@ -90,8 +89,8 @@ public class CollisionHandler {
         int index = -1;
         boolean collision = false;
 
-        for (int i = 0; i < abstractStage.items.length; i++) {
-            ParentInteractable currentItem = abstractStage.items[i];
+        for (int i = 0; i < gameStateManager.items.length; i++) {
+            ParentInteractable currentItem = gameStateManager.items[i];
             if (currentItem == null) continue;
 
             if (hitbox.intersects(currentItem.getHitbox()) && currentItem.isCollision()) {

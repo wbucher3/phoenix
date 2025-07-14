@@ -1,17 +1,20 @@
 package interactable;
 
-import game.AbstractStage;
+import game.GameStateManager;
+import stages.StageType;
 import util.UtilityFunctions;
 
 public class Ladder extends ParentInteractable {
 
-    AbstractStage stage;
 
 
-    public Ladder(String name, int x, int y, boolean collision, AbstractStage stage) {
+    private StageType nextLocation;
+
+    public Ladder(String name, int x, int y, boolean collision, StageType nextLocation) {
         super(name, x, y, collision);
         super.setImage(UtilityFunctions.readImageFile("./assets/items/", "ladder", ".png"));
-        this.stage = stage;
+        this.nextLocation = nextLocation;
+//        this.stage = stage;
     }
 
     @Override
@@ -21,7 +24,8 @@ public class Ladder extends ParentInteractable {
 
     @Override
     public void handleInteraction() {
-        this.stage.nextStage(); // give a param to tell what stage to go to
+        GameStateManager.getInstance().alertNewStage(this.nextLocation);
+//        this.stage.nextStage(); // give a param to tell what stage to go to
 
     }
 

@@ -1,22 +1,24 @@
 package stages;
 
-import game.AbstractStage;
+import game.GameStateManager;
 import interactable.ParentInteractable;
 import tile.TileInformation;
+import util.Constants;
+
+import java.io.File;
 
 public class StageZero extends AbstractStage {
 
 
     public StageZero() {
-        super(20, 25, getTileInformation());
+        super(20, 25, 3 * Constants.TILE_SIZE, 3 * Constants.TILE_SIZE,fetchTileInformation(), new File("./assets/music/test-song.wav"));
     }
 
-    private static TileInformation getTileInformation() {
+    private static TileInformation fetchTileInformation() {
         return new TileInformation("./assets/maps/testmap1.csv", "./assets/tiles/", new String[]{"stone-block", "wood-block"}, new boolean[]{false, true});
-
     }
 
-    private static ParentInteractable[] getFloorItems() {
+    public ParentInteractable[] getFloorItems() {
         ParentInteractable[] items = new ParentInteractable[10];
 //        items[0] = new Key("Key 1",  Constants.TILE_SIZE * 6, Constants.TILE_SIZE * 4, false);
 //        items[1] = new Door("Door 1 Left",  Constants.TILE_SIZE * 6, Constants.TILE_SIZE * 6, false);

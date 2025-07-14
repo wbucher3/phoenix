@@ -40,11 +40,10 @@ public class MouseHandler extends MouseAdapter {
 
     @Override
     public void mouseMoved(MouseEvent e) {
-        System.out.println("X:" + e.getX() + " Y: " + e.getY());
-
+        this.mouseX = e.getX();
+        this.mouseY = e.getY();
     }
 
-
-
-
+    public int getMouseX() {return this.mouseX; }
+    public int getMouseY() {return this.mouseY; }
 }

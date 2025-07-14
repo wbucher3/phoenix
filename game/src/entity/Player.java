@@ -1,34 +1,32 @@
 package entity;
 
-import game.AbstractStage;
+import game.GameStateManager;
 import game.CollisionHandler;
 import game.KeyPressHandler;
-import interactable.ParentInteractable;
+import game.MouseHandler;
 import util.Constants;
-import util.Pair;
 
 import java.awt.*;
-import java.util.Arrays;
 
 public class Player extends Entity {
 
     KeyPressHandler keyPressHandler;
-    public CollisionHandler collisionHandler;
-    AbstractStage stage;
+    MouseHandler mouseHandler;
+    CollisionHandler collisionHandler;
+    GameStateManager gameStateManager;
 
     private final int screenCenterX;
     private final int screenCenterY;
 
 
 
-    public Player(KeyPressHandler keyPressHandler, CollisionHandler collisionHandler, AbstractStage stage, int screenCenterX, int screenCenterY) {
+    public Player(KeyPressHandler keyPressHandler, CollisionHandler collisionHandler, MouseHandler mouseHandler, GameStateManager gameStateManager, int screenCenterX, int screenCenterY) {
         super(8, 32); // animation speed % total frames === 0 for smooth animations
         this.keyPressHandler = keyPressHandler;
         this.collisionHandler = collisionHandler;
-        this.stage = stage;
+        this.mouseHandler = mouseHandler;
+        this.gameStateManager = gameStateManager;
 
-        super.setX(3 * Constants.TILE_SIZE);
-        super.setY(3 * Constants.TILE_SIZE);
         super.setWidth(Constants.TILE_SIZE);
         super.setHeight(Constants.TILE_SIZE);
         super.setSpeed(8);
@@ -54,13 +52,16 @@ public class Player extends Entity {
         }
         super.setPreviousState(super.getCurrentState());
 
-        // Item interaction
+//        System.out.println(this.mouseHandler.getMouseX() + ", " + this.mouseHandler.getMouseY());
 
-        for (int i = 0; i < stage.items.length; i++) {
-            if (this.collisionHandler.isPlayerOnTop(this, stage.items[i])) {
+        // Item interaction
+        for (int i = 0; i < gameStateManager.items.length; i++) {
+            if (this.collisionHandler.isPlayerOnTop(this, gameStateManager.items[i])) {
                 this.handleItemCollision(i);
             }
         }
+
+
 
         // MOVEMENT
         if (keyPressHandler.isMovementKeyPressed()) {
@@ -122,8 +123,8 @@ public class Player extends Entity {
 
     private void handleItemCollision(int index) {
         if (keyPressHandler.interactPressed) {
-            this.stage.items[index].handleInteraction();
-            this.stage.items[index] = null;
+            this.gameStateManager.items[index].handleInteraction();
+            this.gameStateManager.items[index] = null;
         }
 
     }

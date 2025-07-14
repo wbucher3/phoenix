@@ -1,6 +1,5 @@
-import game.AbstractStage;
+import game.GameStateManager;
 import stages.StageOne;
-import stages.StageZero;
 
 import javax.swing.*;
 
@@ -17,14 +16,15 @@ public class Main {
         window.setLocationRelativeTo(null);
         window.setExtendedState(JFrame.MAXIMIZED_BOTH);
 
-        // Sets the first stage
-//        AbstractStage abstractStage = new StageZero();
-        AbstractStage abstractStage = new StageOne();
-        window.add(abstractStage);
+        // Sets the game manager up
+        GameStateManager gameStateManager = GameStateManager.getInstance();
+        window.add(gameStateManager);
         window.pack();
         window.setVisible(true);
 
         // starts the first stage
-        abstractStage.startGameThread();
+        gameStateManager.startGameThread();
+
+
     }
 }
