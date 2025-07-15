@@ -2,6 +2,7 @@ import game.GameStateManager;
 import stages.StageOne;
 
 import javax.swing.*;
+import java.awt.*;
 
 public class Main {
     public static void main(String[] args) {
@@ -10,7 +11,7 @@ public class Main {
         System.setProperty("sun.java2d.opengl", "true");
 
         JFrame window = new JFrame();
-        window.setTitle("Game");
+        window.setTitle("Cave In");
         window.setResizable(false);
         window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         window.setLocationRelativeTo(null);

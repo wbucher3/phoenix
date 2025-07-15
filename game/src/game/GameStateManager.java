@@ -7,7 +7,6 @@ import stages.StageOne;
 import stages.StageType;
 import stages.StageZero;
 import tile.TileHandler;
-import tile.TileInformation;
 import util.Constants;
 
 import javax.swing.*;
