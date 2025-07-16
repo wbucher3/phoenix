@@ -17,7 +17,7 @@ public class StageZero extends AbstractStage {
     private static TileInformation fetchTileInformation() {
         return new TileInformation("./assets/maps/testmap1.csv",
                                     "./assets/tiles/",
-                                                new String[]{"floor", "crazy"},
+                                                new String[]{"simple-floor-purple", "simple-wall-purple"},
                                                 new boolean[]{false, true});
     }
 
