@@ -5,7 +5,7 @@ import java.awt.event.MouseEvent;
 
 public class MouseHandler extends MouseAdapter {
 
-    public boolean leftMouseClicked, rightMouseClicked;
+    private boolean leftMouseClicked, rightMouseClicked;
     private int mouseX;
     private int mouseY;
 
@@ -16,8 +16,6 @@ public class MouseHandler extends MouseAdapter {
 
         if (buttonClicked == MouseEvent.BUTTON1) {
             this.leftMouseClicked = true;
-            System.out.println("Left Clicked!");
-            System.out.println("X:" + e.getX() + " Y: " + e.getY());
         }
         if (buttonClicked == MouseEvent.BUTTON2) {
             this.rightMouseClicked = true;
@@ -30,7 +28,6 @@ public class MouseHandler extends MouseAdapter {
 
         if (buttonClicked == MouseEvent.BUTTON1) {
             this.leftMouseClicked = false;
-            System.out.println("Left Release!");
         }
         if (buttonClicked == MouseEvent.BUTTON2) {
             this.rightMouseClicked = false;
@@ -51,4 +48,6 @@ public class MouseHandler extends MouseAdapter {
 
     public int getMouseX() {return this.mouseX; }
     public int getMouseY() {return this.mouseY; }
+    public boolean isLeftMouseClicked() {return this.leftMouseClicked;}
+    public boolean isRightMouseClicked() {return this.rightMouseClicked;}
 }

@@ -49,7 +49,7 @@ public class Player extends Entity {
 
     public void drawPlayer(Graphics2D graphics2D) {
         super.draw(graphics2D, this.screenCenterX, this.screenCenterY);
-        this.weapon.drawWeapon(graphics2D, this, this.mouseX, this.mouseY, mouseHandler.leftMouseClicked);
+        this.weapon.drawWeapon(graphics2D, this, this.mouseX, this.mouseY, mouseHandler.isLeftMouseClicked());
     }
 
     public void update() {
