@@ -233,6 +233,7 @@ public class GameStateManager extends JPanel implements Runnable{
             graphics2d.setColor(Color.white);
             graphics2d.drawString("FPS: " + this.currentFPS , 10, 380);
             graphics2d.drawString("Draw Time: " + TimeUnit.NANOSECONDS.toMillis(timePassed) + " ms" , 10, 400);
+            graphics2d.drawString("Mouse Position: (" + mouseHandler.getMouseX() + ", " + mouseHandler.getMouseY() + ")", 10, 420);
 
         }
     }

@@ -4,6 +4,8 @@ import game.GameStateManager;
 import game.CollisionHandler;
 import game.KeyPressHandler;
 import game.MouseHandler;
+import interactable.weapon.ParentWeapon;
+import interactable.weapon.Shotgun;
 import util.Constants;
 
 import java.awt.*;
@@ -17,6 +19,12 @@ public class Player extends Entity {
 
     private final int screenCenterX;
     private final int screenCenterY;
+
+    private int mouseX = 0;
+    private int mouseY = 0;
+
+
+    private ParentWeapon weapon;
 
 
 
@@ -35,11 +43,13 @@ public class Player extends Entity {
 
         super.readSpriteImages("./assets/cat/", ".png");
         super.setHitBox(new Rectangle(20, 30, 20, 20));
+        this.weapon = new Shotgun();
 
     }
 
     public void drawPlayer(Graphics2D graphics2D) {
         super.draw(graphics2D, this.screenCenterX, this.screenCenterY);
+        this.weapon.drawWeapon(graphics2D, this, this.mouseX, this.mouseY, mouseHandler.leftMouseClicked);
     }
 
     public void update() {
@@ -51,14 +61,10 @@ public class Player extends Entity {
         }
         super.setPreviousState(super.getCurrentState());
 
-//        System.out.println(this.mouseHandler.getMouseX() + ", " + this.mouseHandler.getMouseY());
 
-        // Get mouse position for sprite direction
-        // up X:948 Y: 329
-        // down X:932 Y: 844
-        // right X:932 Y: 844
-        // left X:350 Y: 530
-
+        // Set the mouse position for bullet angles
+        this.mouseX = this.mouseHandler.getMouseX();
+        this.mouseY = this.mouseHandler.getMouseY();
 
 
         // Item interaction

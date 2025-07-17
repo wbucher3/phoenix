@@ -5,7 +5,7 @@ import java.awt.event.MouseEvent;
 
 public class MouseHandler extends MouseAdapter {
 
-    private boolean leftMouseClicked, rightMouseClicked;
+    public boolean leftMouseClicked, rightMouseClicked;
     private int mouseX;
     private int mouseY;
 
@@ -40,6 +40,11 @@ public class MouseHandler extends MouseAdapter {
 
     @Override
     public void mouseMoved(MouseEvent e) {
+        this.mouseX = e.getX();
+        this.mouseY = e.getY();
+    }
+    @Override
+    public void mouseDragged(MouseEvent e) {
         this.mouseX = e.getX();
         this.mouseY = e.getY();
     }
