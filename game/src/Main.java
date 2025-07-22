@@ -11,7 +11,7 @@ public class Main {
         System.setProperty("sun.java2d.opengl", "true");
 
         JFrame window = new JFrame();
-        window.setTitle("Cave In");
+        window.setTitle("Game Name");
         window.setResizable(false);
         window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         window.setLocationRelativeTo(null);

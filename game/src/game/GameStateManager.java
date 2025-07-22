@@ -2,6 +2,7 @@ package game;
 
 import entity.Player;
 import interactable.ParentInteractable;
+import menu.StartScreen;
 import stages.AbstractStage;
 import stages.StageOne;
 import stages.StageType;
@@ -18,8 +19,9 @@ public class GameStateManager extends JPanel implements Runnable{
 
     /** Game tools **/
     private int currentFPS = -1;
-    private GameState state = GameState.GAMEPLAY;
+    private GameState state = GameState.TITLE;
     private Thread gameThread; // separates off the main thread which is running the window
+    private StartScreen startScreen;
 
     /** Map **/
     protected TileHandler tileHandler;
@@ -65,12 +67,14 @@ public class GameStateManager extends JPanel implements Runnable{
         super.addMouseMotionListener(mouseHandler);
         super.setFocusable(true);
 
+        this.startScreen = new StartScreen(mouseHandler, keyPressHandler);
+
         // Creates all the map information
         this.stageHashMap.put(StageType.CITY, new StageOne());
         this.stageHashMap.put(StageType.WOODS, new StageZero());
 
         // Set up first stage
-        this.loadStage(this.currentStage);
+//        this.loadStage(this.currentStage);
     }
 
 
@@ -84,6 +88,22 @@ public class GameStateManager extends JPanel implements Runnable{
         System.out.println("Going to next stage: " + stageType);
     }
 
+    /***
+     * Takes in a new game state and compares to current state to transition
+     */
+    public void alertNewState(GameState gameState) {
+
+        // We are beginning the game
+        if (this.state == GameState.TITLE && gameState == GameState.GAMEPLAY) {
+            this.state = gameState;
+            this.loadStage(this.currentStage);
+        }
+
+        // Finished Game
+        if (this.state == GameState.GAMEPLAY && gameState == GameState.END_SCREEN) {
+            // TODO
+        }
+    }
 
     /**
      * Creates a new thread and starts it
@@ -141,7 +161,12 @@ public class GameStateManager extends JPanel implements Runnable{
      * Performs actions of the frame
      * */
     public void update() {
-        this.player.update();
+
+        switch (this.state) {
+            case TITLE -> this.startScreen.update();
+            case GAMEPLAY -> this.player.update();
+        }
+
     }
 
 
@@ -178,9 +203,10 @@ public class GameStateManager extends JPanel implements Runnable{
      * Initial state
      * Paints the title screen
      * */
-    public void paintTitleScreen(Graphics2D graphics2D){
-
+    public void paintTitleScreen(Graphics2D graphics2d){
+        this.startScreen.draw(graphics2d);
     }
+
 
     /**
      * Sets all the current objects to the desired stage
