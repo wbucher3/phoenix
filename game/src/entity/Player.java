@@ -41,7 +41,7 @@ public class Player extends Entity {
         this.screenCenterX = screenCenterX - (Constants.TILE_SIZE / 2);
         this.screenCenterY = screenCenterY - (Constants.TILE_SIZE / 2);
 
-        super.readSpriteImages("./assets/cat/", ".png");
+        super.readSpriteImages("./assets/top-down-player/", ".png");
         super.setHitBox(new Rectangle(20, 30, 20, 20));
         this.weapon = new Shotgun();
 
